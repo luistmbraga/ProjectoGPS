@@ -1,0 +1,21 @@
+1 - long method 
+2 - documentação 
+3 - comentários a meio do método
+4 - large class
+
+5 - normas de organização
+ 5.1 - toString(), equals(), clone()
+ 5.2 - contrutores (vazio, parâmetros?)
+ 5.3 - variáveis privadas
+ 5.4 - gets e sets
+ 5.5 - retornar a interface mais genérica possível (Collection ou Map)
+ 5.6 - verificar uso de herança 
+
+6 - long coditions (switch, ifs, ...)
+7 - ciclo infinitos ex: while(true) ...
+8 - uso de variáveis primitivas 
+9 - uso de variáveis intuitivas (através de dicionário ou n-gramas)
+	identificar variáveis com 1 caracter
+10 - verificar dependência a uma determinada classe (quantas vezes é usada)
+11 - dead code (métodos não usados)
+12 - dead code (classe não usada)
