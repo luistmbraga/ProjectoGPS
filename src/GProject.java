@@ -11,7 +11,7 @@ public class GProject {
     //  Nome da classe e respetiva linha de código
     static Map<String, Integer> classes;
     Map<String, Ficheiro> ficheiros;
-    static String dir = new File("src/").getAbsolutePath();
+    static String dir = new File("src/Ficheiro.java").getAbsolutePath();
 
 
     public GProject(){
@@ -36,7 +36,7 @@ public class GProject {
                 ficheiro.linhas = readLines(file.getAbsolutePath());
                 ficheiro.numeroLinhas = ficheiro.linhas.length;
                 this.ficheiros.put(file.getName(), ficheiro);
-            }else{
+        }else{
                 readFolder(file.getAbsolutePath());
             }
         }
@@ -45,10 +45,17 @@ public class GProject {
     public static void main(String[] args) throws IOException{
         GProject gp = new GProject();
         System.out.println(dir);
-        gp.readFolder(dir);
+        //gp.readFolder(dir);
+        Ficheiro ficheiro = new Ficheiro();
+        ficheiro.linhas = readLines(new File("src/Ficheiro.java").getAbsolutePath());
+        System.out.println(ficheiro.linhas.length);
+        ficheiro.numeroLinhas = ficheiro.linhas.length;
+        ficheiro.run();
+        //this.ficheiros.put(file.getName(), ficheiro);
+        /*
         for(Ficheiro file : gp.ficheiros.values()){
             file.run();
-        }
+        }*/
         return;
     }
 

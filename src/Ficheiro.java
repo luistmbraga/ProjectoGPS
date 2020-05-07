@@ -3,7 +3,7 @@ import java.util.*;
 public class Ficheiro {
 
     //  TODO pensar melhor como vamos guardar isto dos métodos
-    //static Map<String, In > methods;    //  Ficheiro->tostring()
+    //static Map<String, Integer > methods;    //  Ficheiro->tostring()
     String className;
     String[] linhas;
     int numeroLinhas = 0;
@@ -17,7 +17,7 @@ public class Ficheiro {
     boolean construtorCopia;
 
     // a flag de analisar o método está a ser usada
-    boolean identifyMethod;
+    boolean insideMethod;
     boolean identifyPrimitives;
 
     //  chave: nome da variável
@@ -29,9 +29,19 @@ public class Ficheiro {
 
     List<String> dependencias;  //  dependências de classes;
 
+    // linha atual do código
     int linhaAtual;
 
-    public Ficheiro(){
+    // nº de linhas atuais do método
+    int linhasMetodo;
+
+    // chavetas abertas no método
+    int chavetasAbrir = 1;
+
+    // chavetas fechadas no método
+    int chavetasFechar = 0;
+
+    public Ficheiro() {
         this.codeSmells = new ArrayList<>();
         this.variaveisNaoPrivadas = new HashMap<>();
         this.methods = new HashMap<>();
@@ -56,44 +66,51 @@ public class Ficheiro {
         this.dependencias = dependencias;
     }
 
-    public void run(){
-        linhaAtual = 0;
-        int inicioMetodo;
-        int chavetasInicio = 1, int chavetasFim = 0;
+    public void run() {
         int linhasMetodo = 1;
-        for(String line : linhas){
-            linhaAtual++;
-            if(identifyMethod) {
-                inicioMetodo = linhaAtual;
-                if(checkChaveta()) {
-                    if (chavetasInicio == chavetasFim) {
-                        linhasMetodo = chavetasFim - chavetasInicio;
-
-                    }
-                }
-            }
-            else identifyMethod = checkMethod(line);
-
-            if (checkVariaveis()){
-                this.
-            }
-
-            }
+        for (int i = 1; i <= linhas.length; linhaAtual = i++) {
+            if (insideMethod) {
+                checkFimMehtod(linhas[i - 1]);
+            } else checkInicioMethod(linhas[i - 1]);
+           // System.err.println("RUN : " + linhas[i-1]);
+            //checkVariaveis();
         }
-
     }
 
-    public boolean checkMethod(String line){
+
+
+    public void checkInicioMethod(String line){
         String pattern = "(public|protected|private|static|\\s)* +[\\w\\<\\>\\[\\]]+\\s+(\\w+) *\\([^\\)]*\\) *(\\{?|[^;]) (throws)[\\ \\t]*[A-Za-z]* \\{";
-        RegularExpression.findAll(line, pattern);
+        List<String> l = RegularExpression.findAll(line, pattern);
+        if(l.size() != 0) {
+            System.out.println(l.get(0));
+            linhasMetodo = 0;
+            chavetasAbrir = 1;
+            insideMethod = true;
+            Method m = new Method(0, new ArrayList<>());
+            methods.put(l.get(0), m);
+        }
     }
-
+    /*
     public boolean checkVariaveis(){
 
-    }
+    }*/
 
-    public boolean checkChaveta(String line) {
-
+    public void checkFimMehtod(String line) {
+        linhasMetodo++;
+        String pattern = "[\\{\\}]";
+        List<String> l = RegularExpression.findAll(line, pattern);
+        //System.out.println(line);
+        for(String s : l){
+            //System.out.println("f" + s);
+            if (s.equals("{")) chavetasAbrir++;
+            else if(s.equals("}")) chavetasFechar++;
+        }
+        if (chavetasAbrir == chavetasFechar){
+            System.out.println(  this.methods.size());
+            insideMethod = false;
+            chavetasFechar = chavetasAbrir = 0;
+        }
     }
 
     @Override

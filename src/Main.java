@@ -8,14 +8,15 @@ import java.util.regex.Pattern;
 
 public class Main {
     public static void main(String[] args) throws IOException {
+        /*
         // String to be scanned to find the pattern.
         String line = new String(Files.readAllBytes(Paths.get("/Users/josepereira/Desktop/teste/src/Main.java")));
 
         //String pattern = "(.*)(\\d+)(.*)";
-        String pattern = "main(.|\n|\t)*";
+
 
         // Create a Pattern object
-        Pattern r = Pattern.compile(pattern);
+
 
         // Now create matcher object.
         Matcher m = r.matcher(line);
@@ -25,7 +26,9 @@ public class Main {
 
             System.out.println(arr.length);
         }
-
+        */
+        String pattern = "";
+        System.out.println(RegularExpression.findAll("{}{£43}{", pattern).toString());
     }
 
     public static void findMethods(String[] ficheiro){
