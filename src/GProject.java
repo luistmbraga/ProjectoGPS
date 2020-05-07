@@ -48,7 +48,6 @@ public class GProject {
         //gp.readFolder(dir);
         Ficheiro ficheiro = new Ficheiro();
         ficheiro.linhas = readLines(new File("src/Ficheiro.java").getAbsolutePath());
-        System.out.println(ficheiro.linhas.length);
         ficheiro.numeroLinhas = ficheiro.linhas.length;
         ficheiro.run();
         //this.ficheiros.put(file.getName(), ficheiro);

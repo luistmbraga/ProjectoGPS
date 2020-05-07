@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="38fa66ad-4e21-43c3-9eec-2af15f20c5d8" name="Default Changelist" comment="" />
+    <list default="true" id="38fa66ad-4e21-43c3-9eec-2af15f20c5d8" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gps.txt" beforeDir="false" afterPath="$PROJECT_DIR$/gps.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/projeto-gps/CodeSmell$codeSmells.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/projeto-gps/CodeSmell$codeSmells.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/projeto-gps/CodeSmell.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/projeto-gps/CodeSmell.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/projeto-gps/Ficheiro.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/projeto-gps/Ficheiro.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/projeto-gps/GProject.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/projeto-gps/GProject.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/projeto-gps/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/projeto-gps/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/projeto-gps/Method.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/projeto-gps/Method.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/projeto-gps/RegularExpression.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/projeto-gps/RegularExpression.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Ficheiro.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Ficheiro.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GProject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GProject.java" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

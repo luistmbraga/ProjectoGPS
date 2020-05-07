@@ -41,6 +41,11 @@ public class Ficheiro {
     // chavetas fechadas no método
     int chavetasFechar = 0;
 
+
+
+    final String nomeMetodoPadrao = "(public|protected|private|static)(\\ |\\t)+(?!class)[A-Za-z<>]+(\\ |\\t)+[A-Za-z]+(\\ |\\t)*(\\ |\\(.*\\{)";
+    final String chavetasPadrao = "[\\{\\}]";
+
     public Ficheiro() {
         this.codeSmells = new ArrayList<>();
         this.variaveisNaoPrivadas = new HashMap<>();
@@ -68,20 +73,24 @@ public class Ficheiro {
 
     public void run() {
         int linhasMetodo = 1;
+        //checkInicioMethod(linhas[0]);
+
         for (int i = 1; i <= linhas.length; linhaAtual = i++) {
             if (insideMethod) {
                 checkFimMehtod(linhas[i - 1]);
             } else checkInicioMethod(linhas[i - 1]);
-           // System.err.println("RUN : " + linhas[i-1]);
+           //System.err.println("RUN : " + linhas[i-1]);
             //checkVariaveis();
         }
+        System.out.println(methods);
     }
 
 
 
     public void checkInicioMethod(String line){
-        String pattern = "(public|protected|private|static|\\s)* +[\\w\\<\\>\\[\\]]+\\s+(\\w+) *\\([^\\)]*\\) *(\\{?|[^;]) (throws)[\\ \\t]*[A-Za-z]* \\{";
+        String pattern = nomeMetodoPadrao;
         List<String> l = RegularExpression.findAll(line, pattern);
+
         if(l.size() != 0) {
             System.out.println(l.get(0));
             linhasMetodo = 0;
@@ -98,7 +107,7 @@ public class Ficheiro {
 
     public void checkFimMehtod(String line) {
         linhasMetodo++;
-        String pattern = "[\\{\\}]";
+        String pattern = chavetasPadrao;
         List<String> l = RegularExpression.findAll(line, pattern);
         //System.out.println(line);
         for(String s : l){
