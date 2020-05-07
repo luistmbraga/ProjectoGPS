@@ -25,6 +25,7 @@ public class Main {
 
             System.out.println(arr.length);
         }
+
     }
 
     public static void findMethods(String[] ficheiro){
@@ -35,4 +36,6 @@ public class Main {
 
         }
     }
+
+
 }
