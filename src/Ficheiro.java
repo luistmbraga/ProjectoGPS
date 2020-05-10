@@ -93,9 +93,13 @@ public class Ficheiro {
         for (; i <= linhas.length; linhaAtual = ++i) {
             String linha = linhas[i - 1];
             if (insideMethod) {
+                checkVariaveisUmCaracter(linha);
                 checkWhileTrue(linha);
                 checkFimMehtod(linha);
-            } else checkInicioMethod(linha);
+            } else {
+                checkVariaveisPrivadas(linha);
+                checkInicioMethod(linha);
+            }
            //System.err.println("RUN : " + linhas[i-1]);
             //checkVariaveis();
         }
@@ -148,6 +152,27 @@ public class Ficheiro {
         if(l.size() != 0){
             Method method = methods.get(nomeMetodo);
             CodeSmell cs = new CodeSmell(CodeSmellType.WhileTrue, linhaAtual);
+            method.codeSmells.add(cs);
+        }
+    }
+
+    public void checkVariaveisPrivadas(String line){
+        String pattern = "private[A-Za-z0-9 <>,\\[\\]]+[=;]";
+        List<String> l = RegularExpression.findAll(line, pattern);
+
+        if(l.size() != 0){
+            CodeSmell cs = new CodeSmell(CodeSmellType.VariaveisPrivadas, linhaAtual);
+            this.codeSmells.add(cs);
+        }
+    }
+
+    public void checkVariaveisUmCaracter(String line){
+        String pattern = "(final)?[A-Za-z\\[\\]<>, ]+ +[A-Za-z] *[;=]";
+        List<String> l = RegularExpression.findAll(line, pattern);
+
+        if(l.size() != 0){
+            Method method = methods.get(nomeMetodo);
+            CodeSmell cs = new CodeSmell(CodeSmellType.VariaveisUmCaracter, linhaAtual);
             method.codeSmells.add(cs);
         }
     }
