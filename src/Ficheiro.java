@@ -50,6 +50,9 @@ public class Ficheiro {
     final String nomeMetodoPadrao = "(public|protected|private|static)(\\ |\\t)+(?!class)[A-Za-z<>]+(\\ |\\t)+[A-Za-z]+(\\ |\\t)*(\\ |\\(.*\\{)";
     final String chavetasPadrao = "[\\{\\}]";
     final String whileTruePadrao = "while\\(true\\)\\{";
+    final String excecaoPadrao ="throws";
+    final String inputOutputPadrao = "(ArrayList|List|HashMap|Set|Queue|Dequeue|Map|ListIterator|SortedSet|SortedMap|HashSet|TreeSet|LinkedList|TreeMap|PriorityQueue)";
+    final int numeroMaximoLinhas = 10;
 
     public Ficheiro() {
         this.codeSmells = new ArrayList<>();
@@ -86,7 +89,7 @@ public class Ficheiro {
         this.dependencias = dependencias;
     }
 
-    public void run() {
+    public void run() throws Exception{
         int i = 1;
         while(!checkClassName(linhas[i++]));
 
@@ -108,7 +111,7 @@ public class Ficheiro {
 
 
 
-    public void checkInicioMethod(String line){
+    public void checkInicioMethod(String line) throws Exception{
         String pattern = nomeMetodoPadrao;
         List<String> l = RegularExpression.findAll(line, pattern);
 
@@ -120,6 +123,8 @@ public class Ficheiro {
             nomeMetodo = l.get(0);
             Method m = new Method(0, new ArrayList<>());
             methods.put(nomeMetodo, m);
+            checkInputOutputGenerico(line);
+            checkExcessao(line);
         }
     }
     /*
@@ -140,6 +145,10 @@ public class Ficheiro {
         if (chavetasAbrir == chavetasFechar){
             System.out.println(this.methods.size());
             this.methods.get(nomeMetodo).linhas = linhasMetodo;
+            if(linhasMetodo > numeroMaximoLinhas){
+                CodeSmell cs = new CodeSmell(CodeSmellType.LongMethod, linhaAtual-linhasMetodo);
+                methods.get(nomeMetodo).codeSmells.add(cs);
+            }
             insideMethod = false;
             chavetasFechar = chavetasAbrir = 0;
         }
@@ -152,6 +161,32 @@ public class Ficheiro {
         if(l.size() != 0){
             Method method = methods.get(nomeMetodo);
             CodeSmell cs = new CodeSmell(CodeSmellType.WhileTrue, linhaAtual);
+            method.codeSmells.add(cs);
+        }
+    }
+
+    public void checkInputOutputGenerico(String line){
+
+        String pattern = inputOutputPadrao;
+        List<String> l = RegularExpression.findAll(line, pattern);
+
+        if(l.size() != 0){
+            System.out.println("INPUT/OUTPUT Não Generico: "+ line);
+            Method method = methods.get(nomeMetodo);
+            CodeSmell cs = new CodeSmell(CodeSmellType.InputOutputGenerico, linhaAtual);
+            method.codeSmells.add(cs);
+        }
+    }
+
+    public void checkExcessao(String line) throws Exception{
+        String pattern = excecaoPadrao;
+        List<String> l = RegularExpression.findAll(line, pattern);
+
+        //System.out.println(line);
+        if(l.size() == 0){
+         //   System.out.println(" Metodo sem Excessao: "+ line);
+            Method method = methods.get(nomeMetodo);
+            CodeSmell cs = new CodeSmell(CodeSmellType.Excessao, linhaAtual);
             method.codeSmells.add(cs);
         }
     }
@@ -210,6 +245,8 @@ public class Ficheiro {
         }
         return false;
     }
+
+
 
 
 

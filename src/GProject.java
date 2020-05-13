@@ -50,7 +50,11 @@ public class GProject {
         Ficheiro ficheiro = new Ficheiro(file.getName());
         ficheiro.linhas = readLines(new File("src/Ficheiro.java").getAbsolutePath());
         ficheiro.numeroLinhas = ficheiro.linhas.length;
-        ficheiro.run();
+        try {
+            ficheiro.run();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         //this.ficheiros.put(file.getName(), ficheiro);
         /*
         for(Ficheiro file : gp.ficheiros.values()){
