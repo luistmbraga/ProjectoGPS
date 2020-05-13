@@ -46,13 +46,16 @@ public class Ficheiro {
     // nome do método atual
     String nomeMetodo;
 
-
     final String nomeMetodoPadrao = "(public|protected|private|static)(\\ |\\t)+(?!class)[A-Za-z<>]+(\\ |\\t)+[A-Za-z]+(\\ |\\t)*(\\ |\\(.*\\{)";
     final String chavetasPadrao = "[\\{\\}]";
     final String whileTruePadrao = "while\\(true\\)\\{";
     final String excecaoPadrao ="throws";
     final String inputOutputPadrao = "(ArrayList|List|HashMap|Set|Queue|Dequeue|Map|ListIterator|SortedSet|SortedMap|HashSet|TreeSet|LinkedList|TreeMap|PriorityQueue)";
     final int numeroMaximoLinhas = 10;
+    final String classNamePadrao1 = "\\s*(public|private)\\s+class\\s+(\\w+)\\s+((extends\\s+\\w+)|(implements\\s+\\w+( ,\\w+)*))?\\s*\\{";
+    final String classNamePadrao2 = "\\s*(public|private)\\s+class\\s+(\\w+)";
+    final String variaveisPrivadasPadrao = "private[A-Za-z0-9 <>,\\[\\]]+[=;]";
+    final String variaveisUmCarater = "(final)?[A-Za-z\\[\\]<>, ]+ +[A-Za-z] *[;=]";
 
     public Ficheiro() {
         this.codeSmells = new ArrayList<>();
@@ -192,8 +195,7 @@ public class Ficheiro {
     }
 
     public void checkVariaveisPrivadas(String line){
-        String pattern = "private[A-Za-z0-9 <>,\\[\\]]+[=;]";
-        List<String> l = RegularExpression.findAll(line, pattern);
+        List<String> l = RegularExpression.findAll(line, variaveisPrivadasPadrao);
 
         if(l.size() != 0){
             CodeSmell cs = new CodeSmell(CodeSmellType.VariaveisPrivadas, linhaAtual);
@@ -202,8 +204,7 @@ public class Ficheiro {
     }
 
     public void checkVariaveisUmCaracter(String line){
-        String pattern = "(final)?[A-Za-z\\[\\]<>, ]+ +[A-Za-z] *[;=]";
-        List<String> l = RegularExpression.findAll(line, pattern);
+        List<String> l = RegularExpression.findAll(line, variaveisUmCarater);
 
         if(l.size() != 0){
             Method method = methods.get(nomeMetodo);
@@ -213,16 +214,14 @@ public class Ficheiro {
     }
 
     public boolean checkClassName(String line){
-        String pattern = "\\s*(public|private)\\s+class\\s+(\\w+)\\s+((extends\\s+\\w+)|(implements\\s+\\w+( ,\\w+)*))?\\s*\\{";
-        List<String> l = RegularExpression.findAll(line, pattern);
+        List<String> l = RegularExpression.findAll(line, classNamePadrao1);
 
         if(l.size() != 0){
             String c = l.get(0);
             if (c.contains("extends")) System.out.println("Classe que usa herança");
             if (c.contains("implements")) System.out.println("Classe que implementa interfaces");
 
-            String pattern2 = "\\s*(public|private)\\s+class\\s+(\\w+)";
-            List<String> lAux = RegularExpression.findAll(c, pattern2);
+            List<String> lAux = RegularExpression.findAll(c, classNamePadrao2);
             String auxName = lAux.get(0).replace(" ", "");
             if(auxName.contains("private")) className = auxName.substring(12);
             else className = auxName.substring(11);
@@ -245,9 +244,6 @@ public class Ficheiro {
         }
         return false;
     }
-
-
-
 
 
     @Override

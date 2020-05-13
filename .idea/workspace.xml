@@ -4,16 +4,9 @@
     <list default="true" id="38fa66ad-4e21-43c3-9eec-2af15f20c5d8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gps.txt" beforeDir="false" afterPath="$PROJECT_DIR$/gps.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/projeto-gps/CodeSmell$codeSmells.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/projeto-gps/CodeSmell$codeSmells.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/projeto-gps/CodeSmell.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/projeto-gps/CodeSmell.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/projeto-gps/Ficheiro.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/projeto-gps/Ficheiro.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/projeto-gps/GProject.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/projeto-gps/GProject.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/projeto-gps/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/projeto-gps/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/projeto-gps/Method.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/projeto-gps/Method.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/projeto-gps/RegularExpression.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/projeto-gps/RegularExpression.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Ficheiro.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Ficheiro.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GProject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GProject.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,8 +28,22 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.0" />
   </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
   <component name="RunManager" selected="Application.GProject">
     <configuration name="GProject" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="11.0.4" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="GProject" />
       <module name="projeto-gps" />
       <method v="2">
@@ -50,6 +57,10 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Application.GProject" />
+      <item itemvalue="Application.Main" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.GProject" />
@@ -68,6 +79,14 @@
       <option name="presentableId" value="Default" />
       <updated>1588850632688</updated>
     </task>
+    <task id="LOCAL-00001" summary="8,1,14 Alienas Feitas">
+      <created>1589378772843</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1589378772843</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -82,6 +101,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="8,1,14 Alienas Feitas" />
+    <option name="LAST_COMMIT_MESSAGE" value="8,1,14 Alienas Feitas" />
   </component>
   <component name="WindowStateProjectService">
     <state x="618" y="301" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1589138269543">
