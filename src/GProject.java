@@ -32,7 +32,7 @@ public class GProject {
 
         for(File file : filenames) {
             if(file.isFile()){
-                Ficheiro ficheiro = new Ficheiro();
+                Ficheiro ficheiro = new Ficheiro(file.getName());
                 ficheiro.linhas = readLines(file.getAbsolutePath());
                 ficheiro.numeroLinhas = ficheiro.linhas.length;
                 this.ficheiros.put(file.getName(), ficheiro);
@@ -46,7 +46,8 @@ public class GProject {
         GProject gp = new GProject();
         System.out.println(dir);
         //gp.readFolder(dir);
-        Ficheiro ficheiro = new Ficheiro();
+        File file = new File("src/Ficheiro.java");
+        Ficheiro ficheiro = new Ficheiro(file.getName());
         ficheiro.linhas = readLines(new File("src/Ficheiro.java").getAbsolutePath());
         ficheiro.numeroLinhas = ficheiro.linhas.length;
         ficheiro.run();

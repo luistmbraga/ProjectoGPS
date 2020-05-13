@@ -4,6 +4,7 @@ public class Ficheiro {
 
     //  TODO pensar melhor como vamos guardar isto dos métodos
     //static Map<String, Integer > methods;    //  Ficheiro->tostring()
+    String fileName;
     String className;
     String[] linhas;
     int numeroLinhas = 0;
@@ -22,6 +23,7 @@ public class Ficheiro {
 
     //  chave: nome da variável
     Map<String, Integer> variaveisNaoPrivadas;
+
     //  chave: Nome do método - temos a info do número de linhas, e code smells
     Map<String, Method> methods;
 
@@ -30,7 +32,7 @@ public class Ficheiro {
     List<String> dependencias;  //  dependências de classes;
 
     // linha atual do código
-    int linhaAtual;
+    int linhaAtual = 1;
 
     // nº de linhas atuais do método
     int linhasMetodo;
@@ -41,12 +43,25 @@ public class Ficheiro {
     // chavetas fechadas no método
     int chavetasFechar = 0;
 
+    // nome do método atual
+    String nomeMetodo;
 
 
     final String nomeMetodoPadrao = "(public|protected|private|static)(\\ |\\t)+(?!class)[A-Za-z<>]+(\\ |\\t)+[A-Za-z]+(\\ |\\t)*(\\ |\\(.*\\{)";
     final String chavetasPadrao = "[\\{\\}]";
+    final String whileTruePadrao = "while\\(true\\)\\{";
 
     public Ficheiro() {
+        this.codeSmells = new ArrayList<>();
+        this.variaveisNaoPrivadas = new HashMap<>();
+        this.methods = new HashMap<>();
+        this.usoVariaveisPrimitivas = new HashMap<>();
+        dependencias = new ArrayList<>();
+    }
+
+
+    public Ficheiro(String fileName) {
+        this.fileName = fileName;
         this.codeSmells = new ArrayList<>();
         this.variaveisNaoPrivadas = new HashMap<>();
         this.methods = new HashMap<>();
@@ -72,13 +87,19 @@ public class Ficheiro {
     }
 
     public void run() {
-        int linhasMetodo = 1;
-        //checkInicioMethod(linhas[0]);
+        int i = 1;
+        while(!checkClassName(linhas[i++]));
 
-        for (int i = 1; i <= linhas.length; linhaAtual = i++) {
+        for (; i <= linhas.length; linhaAtual = ++i) {
+            String linha = linhas[i - 1];
             if (insideMethod) {
-                checkFimMehtod(linhas[i - 1]);
-            } else checkInicioMethod(linhas[i - 1]);
+                checkVariaveisUmCaracter(linha);
+                checkWhileTrue(linha);
+                checkFimMehtod(linha);
+            } else {
+                checkVariaveisPrivadas(linha);
+                checkInicioMethod(linha);
+            }
            //System.err.println("RUN : " + linhas[i-1]);
             //checkVariaveis();
         }
@@ -96,8 +117,9 @@ public class Ficheiro {
             linhasMetodo = 0;
             chavetasAbrir = 1;
             insideMethod = true;
+            nomeMetodo = l.get(0);
             Method m = new Method(0, new ArrayList<>());
-            methods.put(l.get(0), m);
+            methods.put(nomeMetodo, m);
         }
     }
     /*
@@ -116,11 +138,80 @@ public class Ficheiro {
             else if(s.equals("}")) chavetasFechar++;
         }
         if (chavetasAbrir == chavetasFechar){
-            System.out.println(  this.methods.size());
+            System.out.println(this.methods.size());
+            this.methods.get(nomeMetodo).linhas = linhasMetodo;
             insideMethod = false;
             chavetasFechar = chavetasAbrir = 0;
         }
     }
+
+    public void checkWhileTrue(String line){
+        String pattern = whileTruePadrao;
+        List<String> l = RegularExpression.findAll(line, pattern);
+
+        if(l.size() != 0){
+            Method method = methods.get(nomeMetodo);
+            CodeSmell cs = new CodeSmell(CodeSmellType.WhileTrue, linhaAtual);
+            method.codeSmells.add(cs);
+        }
+    }
+
+    public void checkVariaveisPrivadas(String line){
+        String pattern = "private[A-Za-z0-9 <>,\\[\\]]+[=;]";
+        List<String> l = RegularExpression.findAll(line, pattern);
+
+        if(l.size() != 0){
+            CodeSmell cs = new CodeSmell(CodeSmellType.VariaveisPrivadas, linhaAtual);
+            this.codeSmells.add(cs);
+        }
+    }
+
+    public void checkVariaveisUmCaracter(String line){
+        String pattern = "(final)?[A-Za-z\\[\\]<>, ]+ +[A-Za-z] *[;=]";
+        List<String> l = RegularExpression.findAll(line, pattern);
+
+        if(l.size() != 0){
+            Method method = methods.get(nomeMetodo);
+            CodeSmell cs = new CodeSmell(CodeSmellType.VariaveisUmCaracter, linhaAtual);
+            method.codeSmells.add(cs);
+        }
+    }
+
+    public boolean checkClassName(String line){
+        String pattern = "\\s*(public|private)\\s+class\\s+(\\w+)\\s+((extends\\s+\\w+)|(implements\\s+\\w+( ,\\w+)*))?\\s*\\{";
+        List<String> l = RegularExpression.findAll(line, pattern);
+
+        if(l.size() != 0){
+            String c = l.get(0);
+            if (c.contains("extends")) System.out.println("Classe que usa herança");
+            if (c.contains("implements")) System.out.println("Classe que implementa interfaces");
+
+            String pattern2 = "\\s*(public|private)\\s+class\\s+(\\w+)";
+            List<String> lAux = RegularExpression.findAll(c, pattern2);
+            String auxName = lAux.get(0).replace(" ", "");
+            if(auxName.contains("private")) className = auxName.substring(12);
+            else className = auxName.substring(11);
+
+            System.out.println("FILE NAME : " + fileName);
+            System.out.println("CLASS NAME : " + className);
+
+            if(!className.equals(fileName.substring(0, fileName.length() - 5))){
+                CodeSmell codeSmell = new CodeSmell();
+                codeSmell.codeSmell = CodeSmellType.NomeFicheiroErrado;
+                codeSmell.linhas.add(linhaAtual);
+            }
+            if(Character.isUpperCase(className.charAt(0))){
+                CodeSmell codeSmell = new CodeSmell();
+                codeSmell.codeSmell = CodeSmellType.NomeClasseLetraMinuscula;
+                codeSmell.linhas.add(linhaAtual);
+            }
+
+            return true;
+        }
+        return false;
+    }
+
+
 
     @Override
     public String toString() {
