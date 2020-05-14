@@ -20,6 +20,7 @@ public class Ficheiro {
     // a flag de analisar o método está a ser usada
     boolean insideMethod;
     boolean identifyPrimitives;
+    boolean insideComment = false;
 
     //  chave: nome da variável
     Map<String, Integer> variaveisNaoPrivadas;
@@ -31,7 +32,7 @@ public class Ficheiro {
 
     List<String> dependencias;  //  dependências de classes;
 
-    List<Integer> linhasDeComentariosSimples;
+    List<Integer> linhasDeComentarios;
 
     // linha atual do código
     int linhaAtual = 1;
@@ -80,7 +81,7 @@ public class Ficheiro {
         this.methods = new HashMap<>();
         this.usoVariaveisPrimitivas = new HashMap<>();
         this.dependencias = new ArrayList<>();
-        this.linhasDeComentariosSimples = new ArrayList<>();
+        this.linhasDeComentarios = new ArrayList<>();
     }
 
 
@@ -91,10 +92,10 @@ public class Ficheiro {
         this.methods = new HashMap<>();
         this.usoVariaveisPrimitivas = new HashMap<>();
         this.dependencias = new ArrayList<>();
-        this.linhasDeComentariosSimples = new ArrayList<>();
+        this.linhasDeComentarios = new ArrayList<>();
     }
 
-    public Ficheiro(String className, String[] linhas, int numeroLinhas, List<CodeSmell> codeSmells, boolean toString, boolean equals, boolean clone, boolean construtoVazio, boolean constutorParametrizado, boolean construtorCopia, Map<String, Integer> variaveisNaoPrivadas, Map<String, Method> methods, Map<String, Integer> usoVariaveisPrimitivas, List<String> dependencias, List<Integer> linhasDeComentariosSimples) {
+    public Ficheiro(String className, String[] linhas, int numeroLinhas, List<CodeSmell> codeSmells, boolean toString, boolean equals, boolean clone, boolean construtoVazio, boolean constutorParametrizado, boolean construtorCopia, Map<String, Integer> variaveisNaoPrivadas, Map<String, Method> methods, Map<String, Integer> usoVariaveisPrimitivas, List<String> dependencias, List<Integer> linhasDeComentarios) {
         this.className = className;
         this.linhas = linhas;
         this.numeroLinhas = numeroLinhas;
@@ -109,7 +110,7 @@ public class Ficheiro {
         this.methods = methods;
         this.usoVariaveisPrimitivas = usoVariaveisPrimitivas;
         this.dependencias = dependencias;
-        this.linhasDeComentariosSimples = linhasDeComentariosSimples;
+        this.linhasDeComentarios = linhasDeComentarios;
     }
 
     public void run() throws Exception{
@@ -121,17 +122,24 @@ public class Ficheiro {
 
         for (; i <= linhas.length; linhaAtual = ++i) {
             String linha = linhas[i - 1];
-            checkFinalVariables(linha);
-            checkTiposPrimitivos(linha);
-            checkComentariosSimples(linha); //  TODO tou a checkar os comentários fora dos métodos tb, não se era suposto, depois decide-se
-            if (insideMethod) {
-                checkToStringEqualsOrClone(linha);
-                checkVariaveisUmCaracter(linha);
-                checkWhileTrue(linha);
-                checkFimMehtod(linha);
-            } else {
-                checkVariaveisPrivadas(linha);
-                checkInicioMethod(linha);
+            checkFimComentario(linha);  //  tem que se verificar antes do if
+            if(!insideComment) { //  quando estamos dentro de comentários, não vale apena verificar nenhum code smell
+                checkFinalVariables(linha);
+                checkTiposPrimitivos(linha);
+                checkComentariosSimples(linha); //  TODO tou a checkar os comentários fora dos métodos tb, não se era suposto, depois decide-se
+                if (insideMethod) {
+                    checkToStringEqualsOrClone(linha);
+                    checkVariaveisUmCaracter(linha);
+                    checkWhileTrue(linha);
+                    checkFimMehtod(linha);
+                    checkInicioComentario(linha);
+                    //  é necessário colocar aqui este método (checkFimComentario), para os casos de comentários /* */ na mesma linha, pq apesar de checkar antes do if
+                    //  , quando passar no checkInicioComentario, vai por o insideComment a true, e nunca mais entrava neste if se não checkasse o fim
+                    checkFimComentario(linha);
+                } else {
+                    checkVariaveisPrivadas(linha);
+                    checkInicioMethod(linha);
+                }
             }
            //System.err.println("RUN : " + linhas[i-1]);
             //checkVariaveis();
@@ -326,9 +334,30 @@ public class Ficheiro {
 
     public void checkComentariosSimples(String line){
         if(RegularExpression.findAll(line, this.simpleComments).size() > 0)
-            this.linhasDeComentariosSimples.add(linhaAtual);
+            this.linhasDeComentarios.add(linhaAtual);
     }
 
+    public void checkInicioComentario(String line){
+        String initComment = "\\/\\*";
+
+        /*
+         *
+         * exemplo para ser capturado
+         *
+         * */
+
+        if(RegularExpression.findAll(line, initComment).size() > 0){
+            this.insideComment = true;
+            this.linhasDeComentarios.add(linhaAtual);
+        }
+    }
+
+    public void checkFimComentario(String line){
+        String endComment = "\\*\\/";
+        if(RegularExpression.findAll(line, endComment).size() > 0){
+            this.insideComment = false;
+        }
+    }
 
     @Override
     public String toString() {

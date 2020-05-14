@@ -26,7 +26,7 @@ public class Main {
 
         Ficheiro f = new Ficheiro();
         f.checkComentariosSimples("int a = 2; // isto é um comentário");
-        System.out.println(f.linhasDeComentariosSimples);
+        System.out.println(f.linhasDeComentarios);
     }
 
     public static void findMethods(String[] ficheiro){
