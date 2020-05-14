@@ -60,6 +60,8 @@ public class Ficheiro {
     final String variaveisPrivadasPadrao = "private[A-Za-z0-9 <>,\\[\\]]+[=;]";
     final String variaveisUmCarater = "(final)?[A-Za-z\\[\\]<>, ]+ +[A-Za-z] *[;=]";
 
+    final String variaveisComTiposPrimitivos = "(byte|short|int|long|float|double|char|boolean){1}[\\[\\]]*(\\ |\\t)+[?:A-Za-z0-9]+";
+
     final String toStringPadrao = "public[\\ \\t]+String[\\ \\t]+toString[\\ \\t]*\\([\\ \\t]*\\)[\\ \\t]*\\{";
     String clonePadrao; // definido depois de encontrada a classname
     String equalsPadrao; // definido depois de encontrada a classname
@@ -114,6 +116,7 @@ public class Ficheiro {
         for (; i <= linhas.length; linhaAtual = ++i) {
             String linha = linhas[i - 1];
             checkFinalVariables(linha);
+            checkTiposPrimitivos(linha);
             if (insideMethod) {
                 checkToStringEqualsOrClone(linha);
                 checkVariaveisUmCaracter(linha);
@@ -301,6 +304,17 @@ public class Ficheiro {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Verifica o uso de tipos primitivos em variáveis, retornos e parâmetros de funções.
+     * @param line linha a ser processada
+     */
+    public void checkTiposPrimitivos(String line){
+        for(String var : RegularExpression.findAll(line, this.variaveisComTiposPrimitivos)) {
+            String[] r = var.split(" ");    //  separar o tipo da variável
+            this.usoVariaveisPrimitivas.put(r[r.length-1], linhaAtual); //  r.length-1, pois pode ter mais do que um espaço
+        }
     }
 
 

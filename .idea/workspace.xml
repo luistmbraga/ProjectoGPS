@@ -2,13 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="38fa66ad-4e21-43c3-9eec-2af15f20c5d8" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/projeto-gps/Ficheiro.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/projeto-gps/Ficheiro.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/projeto-gps/GProject.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/projeto-gps/GProject.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/CodeSmell.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CodeSmell.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Ficheiro.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Ficheiro.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GProject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GProject.java" afterDir="false" />
     </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -38,9 +35,21 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.0" />
   </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
   <component name="RunManager" selected="Application.GProject">
     <configuration name="GProject" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="ALTERNATIVE_JRE_PATH" value="11.0.4" />
+      <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="GProject" />
       <module name="projeto-gps" />
@@ -66,18 +75,6 @@
       </list>
     </recent_temporary>
   </component>
-  <component name="ServiceViewManager">
-    <option name="viewStates">
-      <list>
-        <serviceView>
-          <treeState>
-            <expand />
-            <select />
-          </treeState>
-        </serviceView>
-      </list>
-    </option>
-  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -89,6 +86,7 @@
       <option name="presentableId" value="Default" />
       <updated>1588850632688</updated>
       <workItem from="1589451349862" duration="5241000" />
+      <workItem from="1589463911169" duration="88000" />
     </task>
     <task id="LOCAL-00001" summary="8,1,14 Alienas Feitas">
       <created>1589378772843</created>
