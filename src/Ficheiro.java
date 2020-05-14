@@ -46,6 +46,9 @@ public class Ficheiro {
     // nome do método atual
     String nomeMetodo;
 
+    // contador de variáveis final
+    int finalCounter = 0;
+
     final String nomeMetodoPadrao = "(public|protected|private|static)(\\ |\\t)+(?!class)[A-Za-z<>]+(\\ |\\t)+[A-Za-z]+(\\ |\\t)*(\\ |\\(.*\\{)";
     final String chavetasPadrao = "[\\{\\}]";
     final String whileTruePadrao = "while\\(true\\)\\{";
@@ -56,6 +59,15 @@ public class Ficheiro {
     final String classNamePadrao2 = "\\s*(public|private)\\s+class\\s+(\\w+)";
     final String variaveisPrivadasPadrao = "private[A-Za-z0-9 <>,\\[\\]]+[=;]";
     final String variaveisUmCarater = "(final)?[A-Za-z\\[\\]<>, ]+ +[A-Za-z] *[;=]";
+
+    final String toStringPadrao = "public[\\ \\t]+String[\\ \\t]+toString[\\ \\t]*\\([\\ \\t]*\\)[\\ \\t]*\\{";
+    String clonePadrao; // definido depois de encontrada a classname
+    String equalsPadrao; // definido depois de encontrada a classname
+    final String finalPadrao = "final[\\ \\t]+";
+    final int MAX_FINAL = 5; // + que 5 variáveis final é code smell
+    final int MAX_LINES = 200; // + que 200 linhas é considerada large class
+    final int MAX_METHODS = 10; // + que 10 métodos é considerada large class
+
 
     public Ficheiro() {
         this.codeSmells = new ArrayList<>();
@@ -94,11 +106,16 @@ public class Ficheiro {
 
     public void run() throws Exception{
         int i = 1;
+
         while(!checkClassName(linhas[i++]));
+        clonePadrao = "public[\\ \\t]+" + className + "[\\ \\t]+clone[\\ \\t]*\\([\\ \\t]*" + className + "[\\ \\t]+.*[\\ \\t]*\\)[\\ \\t]*\\{";
+        equalsPadrao = "public[\\ \\t]+boolean[\\ \\t]+equals[\\ \\t]*\\([\\ \\t]*" + className + "[\\ \\t]+.*[\\ \\t]*\\)[\\ \\t]*\\{";
 
         for (; i <= linhas.length; linhaAtual = ++i) {
             String linha = linhas[i - 1];
+            checkFinalVariables(linha);
             if (insideMethod) {
+                checkToStringEqualsOrClone(linha);
                 checkVariaveisUmCaracter(linha);
                 checkWhileTrue(linha);
                 checkFimMehtod(linha);
@@ -109,9 +126,50 @@ public class Ficheiro {
            //System.err.println("RUN : " + linhas[i-1]);
             //checkVariaveis();
         }
-        System.out.println(methods);
+        //System.out.println(methods);
+        if (finalCounter > MAX_FINAL) {
+            CodeSmell cs = new CodeSmell(CodeSmellType.ManyFinals, -1);
+            this.codeSmells.add(cs);
+        }
+        if (linhas.length > MAX_LINES || methods.size() > MAX_METHODS) {
+            CodeSmell cs = new CodeSmell(CodeSmellType.LargeClass, -1);
+            this.codeSmells.add(cs);
+        }
+        if (toString == false) {
+            CodeSmell cs = new CodeSmell(CodeSmellType.NoToString, -1);
+            this.codeSmells.add(cs);
+        }
+        if (equals == false) {
+            CodeSmell cs = new CodeSmell(CodeSmellType.NoEquals, -1);
+            this.codeSmells.add(cs);
+        }
+        if (clone == false) {
+            CodeSmell cs = new CodeSmell(CodeSmellType.NoClone, -1);
+            this.codeSmells.add(cs);
+        }
+        /*
+        System.out.println(fileName);
+        System.err.println("toString=" + toString);
+        System.err.println("equals=" + equals);
+        System.err.println("clone=" + clone);
+        System.err.println("finalCounter=" + finalCounter);
+        System.out.println(codeSmells);
+        */
     }
 
+    private void checkFinalVariables(String linha) {
+        List<String> l = RegularExpression.findAll(linha, finalPadrao);
+        if (l.isEmpty() == false) finalCounter++;
+    }
+
+    public void checkToStringEqualsOrClone(String linha) {
+        List<String> l = RegularExpression.findAll(linha, toStringPadrao);
+        if (l.isEmpty() == false) { toString = true; return; }
+        l = RegularExpression.findAll(linha, equalsPadrao);
+        if (l.isEmpty() == false) { equals = true; return; }
+        l = RegularExpression.findAll(linha, clonePadrao);
+        if (l.isEmpty() == false) { clone = true; return; }
+    }
 
 
     public void checkInicioMethod(String line) throws Exception{
@@ -119,7 +177,7 @@ public class Ficheiro {
         List<String> l = RegularExpression.findAll(line, pattern);
 
         if(l.size() != 0) {
-            System.out.println(l.get(0));
+            //System.out.println(l.get(0));
             linhasMetodo = 0;
             chavetasAbrir = 1;
             insideMethod = true;
@@ -146,7 +204,7 @@ public class Ficheiro {
             else if(s.equals("}")) chavetasFechar++;
         }
         if (chavetasAbrir == chavetasFechar){
-            System.out.println(this.methods.size());
+            //System.out.println(this.methods.size());
             this.methods.get(nomeMetodo).linhas = linhasMetodo;
             if(linhasMetodo > numeroMaximoLinhas){
                 CodeSmell cs = new CodeSmell(CodeSmellType.LongMethod, linhaAtual-linhasMetodo);
@@ -174,7 +232,7 @@ public class Ficheiro {
         List<String> l = RegularExpression.findAll(line, pattern);
 
         if(l.size() != 0){
-            System.out.println("INPUT/OUTPUT Não Generico: "+ line);
+            //System.out.println("INPUT/OUTPUT Não Generico: "+ line);
             Method method = methods.get(nomeMetodo);
             CodeSmell cs = new CodeSmell(CodeSmellType.InputOutputGenerico, linhaAtual);
             method.codeSmells.add(cs);
@@ -218,16 +276,16 @@ public class Ficheiro {
 
         if(l.size() != 0){
             String c = l.get(0);
-            if (c.contains("extends")) System.out.println("Classe que usa herança");
-            if (c.contains("implements")) System.out.println("Classe que implementa interfaces");
+            if (c.contains("extends")) { /*System.out.println("Classe que usa herança");*/ }
+            if (c.contains("implements")) { /*System.out.println("Classe que implementa interfaces");*/ }
 
             List<String> lAux = RegularExpression.findAll(c, classNamePadrao2);
             String auxName = lAux.get(0).replace(" ", "");
             if(auxName.contains("private")) className = auxName.substring(12);
             else className = auxName.substring(11);
 
-            System.out.println("FILE NAME : " + fileName);
-            System.out.println("CLASS NAME : " + className);
+            //System.out.println("FILE NAME : " + fileName);
+            //System.out.println("CLASS NAME : " + className);
 
             if(!className.equals(fileName.substring(0, fileName.length() - 5))){
                 CodeSmell codeSmell = new CodeSmell();
@@ -249,7 +307,8 @@ public class Ficheiro {
     @Override
     public String toString() {
         return "Ficheiro{" +
-                "className='" + className + '\'' +
+                "fileName='" + fileName + '\'' +
+                ", className='" + className + '\'' +
                 ", linhas=" + Arrays.toString(linhas) +
                 ", numeroLinhas=" + numeroLinhas +
                 ", codeSmells=" + codeSmells +
@@ -259,10 +318,35 @@ public class Ficheiro {
                 ", construtoVazio=" + construtoVazio +
                 ", constutorParametrizado=" + constutorParametrizado +
                 ", construtorCopia=" + construtorCopia +
+                ", insideMethod=" + insideMethod +
+                ", identifyPrimitives=" + identifyPrimitives +
                 ", variaveisNaoPrivadas=" + variaveisNaoPrivadas +
                 ", methods=" + methods +
                 ", usoVariaveisPrimitivas=" + usoVariaveisPrimitivas +
                 ", dependencias=" + dependencias +
+                ", linhaAtual=" + linhaAtual +
+                ", linhasMetodo=" + linhasMetodo +
+                ", chavetasAbrir=" + chavetasAbrir +
+                ", chavetasFechar=" + chavetasFechar +
+                ", nomeMetodo='" + nomeMetodo + '\'' +
+                ", finalCounter=" + finalCounter +
+                ", nomeMetodoPadrao='" + nomeMetodoPadrao + '\'' +
+                ", chavetasPadrao='" + chavetasPadrao + '\'' +
+                ", whileTruePadrao='" + whileTruePadrao + '\'' +
+                ", excecaoPadrao='" + excecaoPadrao + '\'' +
+                ", inputOutputPadrao='" + inputOutputPadrao + '\'' +
+                ", numeroMaximoLinhas=" + numeroMaximoLinhas +
+                ", classNamePadrao1='" + classNamePadrao1 + '\'' +
+                ", classNamePadrao2='" + classNamePadrao2 + '\'' +
+                ", variaveisPrivadasPadrao='" + variaveisPrivadasPadrao + '\'' +
+                ", variaveisUmCarater='" + variaveisUmCarater + '\'' +
+                ", toStringPadrao='" + toStringPadrao + '\'' +
+                ", clonePadrao='" + clonePadrao + '\'' +
+                ", equalsPadrao='" + equalsPadrao + '\'' +
+                ", finalPadrao='" + finalPadrao + '\'' +
+                ", MAX_FINAL=" + MAX_FINAL +
+                ", MAX_LINES=" + MAX_LINES +
+                ", MAX_METHODS=" + MAX_METHODS +
                 '}';
     }
 }

@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 enum CodeSmellType {LongMethod, ComentáriosNoMeioDoCodigo, WhileTrue, NomeFicheiroErrado, NomeClasseLetraMinuscula,
-                    VariaveisPrivadas, VariaveisUmCaracterForaMetodo, VariaveisUmCaracter, InputOutputGenerico,Excessao};
+                    VariaveisPrivadas, VariaveisUmCaracterForaMetodo, VariaveisUmCaracter, InputOutputGenerico,Excessao, NoToString, NoClone, NoEquals, LargeClass, ManyFinals};
 
 public class CodeSmell {
     //TODO colocar os restantes!!!
@@ -23,10 +23,12 @@ public class CodeSmell {
         this.linhas = linhas;
     }
 
+
     @Override
     public String toString() {
         return "CodeSmell{" +
-                "linhas=" + linhas +
+                "codeSmell=" + codeSmell +
+                ", linhas=" + linhas +
                 '}';
     }
 }

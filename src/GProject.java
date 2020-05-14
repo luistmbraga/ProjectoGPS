@@ -10,57 +10,46 @@ public class GProject {
 
     //  Nome da classe e respetiva linha de código
     static Map<String, Integer> classes;
-    Map<String, Ficheiro> ficheiros;
-    static String dir = new File("src/Ficheiro.java").getAbsolutePath();
-
-
-    public GProject(){
-        //this.methods = new HashMap<>();
-        this.classes = new HashMap<>();
-        this.ficheiros = new HashMap<>();
-    }
+    static Map<String, Ficheiro> ficheiros;
 
     public static String[] readLines(String filename) throws IOException {
-
         return new String(Files.readAllBytes(Paths.get(filename))).split("\r\n|\r|\n");
-
     }
 
-    public void readFolder(String dir) throws IOException {
-        File[] filenames = new File(dir).listFiles(); // .list();
-        System.out.println(Arrays.toString(filenames));
+    public GProject(){
+        classes = new HashMap<>();
+        ficheiros = new HashMap<>();
+    }
 
-        for(File file : filenames) {
+    // funciona tanto para 1 ficheiro como para 1 diretoria
+    public void readFolder(String dir) throws Exception {
+        File[] files;
+        File f = new File(dir);
+        if (f.isFile()) { // caso seja apenas 1 ficheiro
+            files = new File[1];
+            files[0] = f;
+        }
+        else { // caso seja uma diretoria
+            files = new File(dir).listFiles();
+        }
+        for(File file : files) {
             if(file.isFile()){
                 Ficheiro ficheiro = new Ficheiro(file.getName());
                 ficheiro.linhas = readLines(file.getAbsolutePath());
                 ficheiro.numeroLinhas = ficheiro.linhas.length;
-                this.ficheiros.put(file.getName(), ficheiro);
-        }else{
+                ficheiro.run();
+                ficheiros.put(file.getName(), ficheiro);
+            }else{
                 readFolder(file.getAbsolutePath());
             }
         }
     }
 
-    public static void main(String[] args) throws IOException{
-        GProject gp = new GProject();
-        System.out.println(dir);
-        //gp.readFolder(dir);
-        File file = new File("src/Ficheiro.java");
-        Ficheiro ficheiro = new Ficheiro(file.getName());
-        ficheiro.linhas = readLines(new File("src/Ficheiro.java").getAbsolutePath());
-        ficheiro.numeroLinhas = ficheiro.linhas.length;
-        try {
-            ficheiro.run();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        //this.ficheiros.put(file.getName(), ficheiro);
-        /*
-        for(Ficheiro file : gp.ficheiros.values()){
-            file.run();
-        }*/
-        return;
+
+    public static void main(String[] args) throws Exception {
+        String filename = "src/Ficheiro.java";
+        String dir = "src/";
+        new GProject().readFolder(filename);
     }
 
 
