@@ -1,10 +1,4 @@
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -27,8 +21,12 @@ public class Main {
             System.out.println(arr.length);
         }
         */
-        String pattern = "";
-        System.out.println(RegularExpression.findAll("{}{£43}{", pattern).toString());
+        /*String pattern = "";
+        System.out.println(RegularExpression.findAll("{}{£43}{", pattern).toString());*/
+
+        Ficheiro f = new Ficheiro();
+        f.checkComentariosSimples("int a = 2; // isto é um comentário");
+        System.out.println(f.linhasDeComentariosSimples);
     }
 
     public static void findMethods(String[] ficheiro){

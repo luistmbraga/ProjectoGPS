@@ -31,6 +31,8 @@ public class Ficheiro {
 
     List<String> dependencias;  //  dependências de classes;
 
+    List<Integer> linhasDeComentariosSimples;
+
     // linha atual do código
     int linhaAtual = 1;
 
@@ -59,6 +61,7 @@ public class Ficheiro {
     final String classNamePadrao2 = "\\s*(public|private)\\s+class\\s+(\\w+)";
     final String variaveisPrivadasPadrao = "private[A-Za-z0-9 <>,\\[\\]]+[=;]";
     final String variaveisUmCarater = "(final)?[A-Za-z\\[\\]<>, ]+ +[A-Za-z] *[;=]";
+    final String simpleComments = "\\/\\/";
 
     final String variaveisComTiposPrimitivos = "(byte|short|int|long|float|double|char|boolean){1}[\\[\\]]*(\\ |\\t)+[?:A-Za-z0-9]+";
 
@@ -76,7 +79,8 @@ public class Ficheiro {
         this.variaveisNaoPrivadas = new HashMap<>();
         this.methods = new HashMap<>();
         this.usoVariaveisPrimitivas = new HashMap<>();
-        dependencias = new ArrayList<>();
+        this.dependencias = new ArrayList<>();
+        this.linhasDeComentariosSimples = new ArrayList<>();
     }
 
 
@@ -86,10 +90,11 @@ public class Ficheiro {
         this.variaveisNaoPrivadas = new HashMap<>();
         this.methods = new HashMap<>();
         this.usoVariaveisPrimitivas = new HashMap<>();
-        dependencias = new ArrayList<>();
+        this.dependencias = new ArrayList<>();
+        this.linhasDeComentariosSimples = new ArrayList<>();
     }
 
-    public Ficheiro(String className, String[] linhas, int numeroLinhas, List<CodeSmell> codeSmells, boolean toString, boolean equals, boolean clone, boolean construtoVazio, boolean constutorParametrizado, boolean construtorCopia, Map<String, Integer> variaveisNaoPrivadas, Map<String, Method> methods, Map<String, Integer> usoVariaveisPrimitivas, List<String> dependencias) {
+    public Ficheiro(String className, String[] linhas, int numeroLinhas, List<CodeSmell> codeSmells, boolean toString, boolean equals, boolean clone, boolean construtoVazio, boolean constutorParametrizado, boolean construtorCopia, Map<String, Integer> variaveisNaoPrivadas, Map<String, Method> methods, Map<String, Integer> usoVariaveisPrimitivas, List<String> dependencias, List<Integer> linhasDeComentariosSimples) {
         this.className = className;
         this.linhas = linhas;
         this.numeroLinhas = numeroLinhas;
@@ -104,6 +109,7 @@ public class Ficheiro {
         this.methods = methods;
         this.usoVariaveisPrimitivas = usoVariaveisPrimitivas;
         this.dependencias = dependencias;
+        this.linhasDeComentariosSimples = linhasDeComentariosSimples;
     }
 
     public void run() throws Exception{
@@ -117,6 +123,7 @@ public class Ficheiro {
             String linha = linhas[i - 1];
             checkFinalVariables(linha);
             checkTiposPrimitivos(linha);
+            checkComentariosSimples(linha); //  TODO tou a checkar os comentários fora dos métodos tb, não se era suposto, depois decide-se
             if (insideMethod) {
                 checkToStringEqualsOrClone(linha);
                 checkVariaveisUmCaracter(linha);
@@ -315,6 +322,11 @@ public class Ficheiro {
             String[] r = var.split(" ");    //  separar o tipo da variável
             this.usoVariaveisPrimitivas.put(r[r.length-1], linhaAtual); //  r.length-1, pois pode ter mais do que um espaço
         }
+    }
+
+    public void checkComentariosSimples(String line){
+        if(RegularExpression.findAll(line, this.simpleComments).size() > 0)
+            this.linhasDeComentariosSimples.add(linhaAtual);
     }
 
 
