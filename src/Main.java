@@ -24,9 +24,9 @@ public class Main {
         /*String pattern = "";
         System.out.println(RegularExpression.findAll("{}{£43}{", pattern).toString());*/
 
-        Ficheiro f = new Ficheiro();
-        f.checkComentariosSimples("int a = 2; // isto é um comentário");
-        System.out.println(f.linhasDeComentarios);
+        String regex = "(public|protected|private|static)(\\ |\t)+[A-Za-z-0-9]+(\\ |\\t)*\\((\\ |\\t)*\\)";
+        String regex1 = "(public|protected|private|static)(\\ |\t)+[A-Za-z-0-9]+(\\ |\\t)*\\((\\ |\\t|.*)*\\)";
+        System.out.println(RegularExpression.findAll("public Class( int a, float x, User user ){}", regex1));
     }
 
     public static void findMethods(String[] ficheiro){
