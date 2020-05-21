@@ -67,9 +67,11 @@ public class Ficheiro {
     final String construtorVazioRegex = "(public|protected|private|static)(\\ |\t)+[A-Za-z-0-9]+(\\ |\\t)*\\((\\ |\\t)*\\)";
     final String construtorParametrizadoRegex = "(public|protected|private|static)(\\ |\t)+[A-Za-z-0-9]+(\\ |\\t)*\\((\\ |\\t|.*)*\\)";
 
+
     final String toStringPadrao = "public[\\ \\t]+String[\\ \\t]+toString[\\ \\t]*\\([\\ \\t]*\\)[\\ \\t]*\\{";
-    String clonePadrao; // definido depois de encontrada a classname
-    String equalsPadrao; // definido depois de encontrada a classname
+    String clonePadrao = "public[\\ \\t]+" + className + "[\\ \\t]+clone[\\ \\t]*\\([\\ \\t]*" + className + "[\\ \\t]+.*[\\ \\t]*\\)[\\ \\t]*\\{"; // definido depois de encontrada a classname
+    String equalsPadrao = "public[\\ \\t]+boolean[\\ \\t]+equals[\\ \\t]*\\([\\ \\t]*" + className + "[\\ \\t]+.*[\\ \\t]*\\)[\\ \\t]*\\{"; // definido depois de encontrada a classname
+
     final String finalPadrao = "final[\\ \\t]+";
     final int MAX_FINAL = 5; // + que 5 variáveis final é code smell
     final int MAX_LINES = 200; // + que 200 linhas é considerada large class
@@ -118,8 +120,7 @@ public class Ficheiro {
         int i = 1;
 
         while(!checkClassName(linhas[i++]));
-        clonePadrao = "public[\\ \\t]+" + className + "[\\ \\t]+clone[\\ \\t]*\\([\\ \\t]*" + className + "[\\ \\t]+.*[\\ \\t]*\\)[\\ \\t]*\\{";
-        equalsPadrao = "public[\\ \\t]+boolean[\\ \\t]+equals[\\ \\t]*\\([\\ \\t]*" + className + "[\\ \\t]+.*[\\ \\t]*\\)[\\ \\t]*\\{";
+
 
         for (; i <= linhas.length; linhaAtual = ++i) {
             String linha = linhas[i - 1];
@@ -230,6 +231,7 @@ public class Ficheiro {
             if(linhasMetodo > numeroMaximoLinhas){
                 CodeSmell cs = new CodeSmell(CodeSmellType.LongMethod, linhaAtual-linhasMetodo);
                 methods.get(nomeMetodo).codeSmells.add(cs);
+
             }
             insideMethod = false;
             chavetasFechar = chavetasAbrir = 0;
@@ -369,6 +371,8 @@ public class Ficheiro {
     public void checkConstrutorParametrizado(String line){
         if(RegularExpression.findAll(line, this.construtorParametrizadoRegex).size() > 0)this.constutorParametrizado = true;
     }
+
+
 
     @Override
     public String toString() {
