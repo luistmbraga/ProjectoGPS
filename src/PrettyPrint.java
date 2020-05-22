@@ -1,6 +1,7 @@
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +31,22 @@ public class PrettyPrint {
             result += "  <tr>\n" +
                     "    <td>" + entry.getKey() + "</td>\n" +
                     "    <td>" + entry.getValue() + "</td>\n" +
+                    "  </tr>\n";
+        }
+        result += "</table>";
+        return result;
+    }
+
+    private static String convertListIntegerToHTMLTable(List<Integer> data, String column1){
+        String result = "<table>\n" +
+                "  <tr>\n" +
+                "    <th>" + column1 + "</th>\n" +
+                "  </tr>\n";
+
+        Collections.sort(data);
+        for (Integer value : data) {
+            result += "  <tr>\n" +
+                    "    <td>" + value + "</td>\n" +
                     "  </tr>\n";
         }
         result += "</table>";
@@ -114,4 +131,18 @@ public class PrettyPrint {
     }
 
     //  TIPOS PRIMITIVOS ---------------------------------------------------------------------------
+
+    //  COMENTÁROS EM MÉTODOS
+
+    public static void comentarios(Ficheiro ficheiro) throws IOException {
+        String newFileName = ficheiro.fileName.split("\\.")[0];
+        FileWriter fw = new FileWriter(GProject.output +newFileName+"Comentarios.html");
+        headerHTML(fw, "Comentários no interior de métodos");
+        if(ficheiro.linhasDeComentarios.size() != 0)
+            fw.write(convertListIntegerToHTMLTable(ficheiro.linhasDeComentarios,"Linha"));
+        else
+            fw.write("Não foram encontrados problemas com esta norma!");
+        footerHTML(fw);
+        fw.close();
+    }
 }

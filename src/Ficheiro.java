@@ -372,8 +372,6 @@ public class Ficheiro {
         if(RegularExpression.findAll(line, this.construtorParametrizadoRegex).size() > 0)this.constutorParametrizado = true;
     }
 
-
-
     @Override
     public String toString() {
         return "Ficheiro{" +
@@ -390,10 +388,12 @@ public class Ficheiro {
                 ", construtorCopia=" + construtorCopia +
                 ", insideMethod=" + insideMethod +
                 ", identifyPrimitives=" + identifyPrimitives +
+                ", insideComment=" + insideComment +
                 ", variaveisNaoPrivadas=" + variaveisNaoPrivadas +
                 ", methods=" + methods +
                 ", usoVariaveisPrimitivas=" + usoVariaveisPrimitivas +
                 ", dependencias=" + dependencias +
+                ", linhasDeComentarios=" + linhasDeComentarios +
                 ", linhaAtual=" + linhaAtual +
                 ", linhasMetodo=" + linhasMetodo +
                 ", chavetasAbrir=" + chavetasAbrir +
@@ -410,6 +410,10 @@ public class Ficheiro {
                 ", classNamePadrao2='" + classNamePadrao2 + '\'' +
                 ", variaveisPrivadasPadrao='" + variaveisPrivadasPadrao + '\'' +
                 ", variaveisUmCarater='" + variaveisUmCarater + '\'' +
+                ", simpleComments='" + simpleComments + '\'' +
+                ", variaveisComTiposPrimitivos='" + variaveisComTiposPrimitivos + '\'' +
+                ", construtorVazioRegex='" + construtorVazioRegex + '\'' +
+                ", construtorParametrizadoRegex='" + construtorParametrizadoRegex + '\'' +
                 ", toStringPadrao='" + toStringPadrao + '\'' +
                 ", clonePadrao='" + clonePadrao + '\'' +
                 ", equalsPadrao='" + equalsPadrao + '\'' +

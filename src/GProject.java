@@ -53,6 +53,7 @@ public class GProject {
         //  TODO aqui coloquem o link para o vosso ficheiro, lembrem-se o vosso ficheiro tem que ser "nomeDoFicheiroAnalisado + CodeSmell + html, p.e GProjectLongMethod.html
         fw.write("<li><a href=\"" + filename + "LongMethod.html\">Long Method</a></li>\n");
         fw.write("<li><a href=\"" + filename + "TiposPrimitivos.html\">Tipos Primitivos</a></li>\n");
+        fw.write("<li><a href=\"" + filename + "Comentarios.html\">Comentários no interior de métodos</a></li>\n");
 
         PrettyPrint.footerHTML(fw);
         fw.close();
@@ -73,6 +74,7 @@ public class GProject {
 
             PrettyPrint.LongMethod(ficheiro);
             PrettyPrint.tiposPrimitivos(ficheiro);
+            PrettyPrint.comentarios(ficheiro);
         }
         PrettyPrint.footerHTML(fw);
         fw.close();
