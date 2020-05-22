@@ -85,7 +85,7 @@ public class PrettyPrint {
         String newFileName = ficheiro.fileName.split("\\.")[0];
         FileWriter fw = new FileWriter(GProject.output +newFileName+"LongMethod.html");
 
-        headerHTML(fw, "Long Method");
+        headerHTML(fw, "Long Method no " + ficheiro.fileName);
 
         fw.write(printTableLongMethod(ficheiro.methods,"Método","Linhas"));
 
@@ -121,7 +121,7 @@ public class PrettyPrint {
     public static void tiposPrimitivos(Ficheiro ficheiro) throws IOException {
         String newFileName = ficheiro.fileName.split("\\.")[0];
         FileWriter fw = new FileWriter(GProject.output +newFileName+"TiposPrimitivos.html");
-        headerHTML(fw, "Tipos Primitivos");
+        headerHTML(fw, "Tipos Primitivos no " + ficheiro.fileName);
         if(ficheiro.usoVariaveisPrimitivas.size() != 0)
             fw.write(convertMapStringIntegerToHTMLTable(ficheiro.usoVariaveisPrimitivas,"Nome da variável ou função","Linha"));
         else
@@ -132,12 +132,12 @@ public class PrettyPrint {
 
     //  TIPOS PRIMITIVOS ---------------------------------------------------------------------------
 
-    //  COMENTÁROS EM MÉTODOS
+    //  COMENTÁROS EM MÉTODOS ----------------------------------------------------------------------
 
     public static void comentarios(Ficheiro ficheiro) throws IOException {
         String newFileName = ficheiro.fileName.split("\\.")[0];
         FileWriter fw = new FileWriter(GProject.output +newFileName+"Comentarios.html");
-        headerHTML(fw, "Comentários no interior de métodos");
+        headerHTML(fw, "Comentários no interior de métodos no " + ficheiro.fileName);
         if(ficheiro.linhasDeComentarios.size() != 0)
             fw.write(convertListIntegerToHTMLTable(ficheiro.linhasDeComentarios,"Linha"));
         else
@@ -145,4 +145,30 @@ public class PrettyPrint {
         footerHTML(fw);
         fw.close();
     }
+
+    //  COMENTÁROS EM MÉTODOS ----------------------------------------------------------------------
+
+
+    //  CONSTRUTORES -------------------------------------------------------------------------------
+
+    public static void construtores(Ficheiro ficheiro) throws IOException {
+        String newFileName = ficheiro.fileName.split("\\.")[0];
+        FileWriter fw = new FileWriter(GProject.output +newFileName+"Construtores.html");
+        headerHTML(fw, "Ausência de Construtores no " + ficheiro.fileName);
+
+        if(ficheiro.construtoVazio && ficheiro.constutorParametrizado)
+            fw.write("Não foram encontrados problemas com esta norma!");
+        else {
+            fw.write("<ul>");
+            if (ficheiro.construtoVazio == false)
+                fw.write("<li><p style=\"color: red\";>Falta a definição do Construtor Vazio</p></li>");
+            if (ficheiro.constutorParametrizado == false)
+                fw.write("<li><p style=\"color: red\";>Falta a definição do Construtor Parametrizado</p></li>");
+            fw.write("</ul>");
+        }
+        footerHTML(fw);
+        fw.close();
+    }
+
+    //  CONSTRUTORES -------------------------------------------------------------------------------
 }

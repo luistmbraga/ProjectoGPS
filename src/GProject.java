@@ -11,13 +11,13 @@ public class GProject {
     static Map<String, Ficheiro> ficheiros;
     static String output = "output/";
 
-    public static String[] readLines(String filename) throws IOException {
-        return new String(Files.readAllBytes(Paths.get(filename))).split("\r\n|\r|\n");
-    }
-
     public GProject(){
         classes = new HashMap<>();
         ficheiros = new HashMap<>();
+    }
+
+    public static String[] readLines(String filename) throws IOException {
+        return new String(Files.readAllBytes(Paths.get(filename))).split("\r\n|\r|\n");
     }
 
     // funciona tanto para 1 ficheiro como para 1 diretoria
@@ -48,12 +48,13 @@ public class GProject {
     public void printListaCodeSmells(String filename)throws Exception{
         FileWriter fw = new FileWriter(GProject.output+filename+".html");
 
-        PrettyPrint.headerHTML(fw, "Normas encontradas no ficheiro: " + filename + ".java");
+        PrettyPrint.headerHTML(fw, "Normas encontradas no " + filename + ".java");
 
         //  TODO aqui coloquem o link para o vosso ficheiro, lembrem-se o vosso ficheiro tem que ser "nomeDoFicheiroAnalisado + CodeSmell + html, p.e GProjectLongMethod.html
         fw.write("<li><a href=\"" + filename + "LongMethod.html\">Long Method</a></li>\n");
         fw.write("<li><a href=\"" + filename + "TiposPrimitivos.html\">Tipos Primitivos</a></li>\n");
         fw.write("<li><a href=\"" + filename + "Comentarios.html\">Comentários no interior de métodos</a></li>\n");
+        fw.write("<li><a href=\"" + filename + "Construtores.html\">Ausência de Construtores</a></li>\n");
 
         PrettyPrint.footerHTML(fw);
         fw.close();
@@ -75,6 +76,7 @@ public class GProject {
             PrettyPrint.LongMethod(ficheiro);
             PrettyPrint.tiposPrimitivos(ficheiro);
             PrettyPrint.comentarios(ficheiro);
+            PrettyPrint.construtores(ficheiro);
         }
         PrettyPrint.footerHTML(fw);
         fw.close();
@@ -84,6 +86,7 @@ public class GProject {
 
 
     public static void main(String[] args) throws Exception {
+        System.err.println("A pasta output/ tem que ser criada!!!!");
         String filename = "src/";
         GProject gProject = new GProject();
         gProject.readFolder(filename);

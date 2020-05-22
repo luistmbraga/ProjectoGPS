@@ -64,8 +64,9 @@ public class Ficheiro {
     final String variaveisUmCarater = "(final)?[A-Za-z\\[\\]<>, ]+ +[A-Za-z] *[;=]";
     final String simpleComments = "\\/\\/";
     final String variaveisComTiposPrimitivos = "(byte|short|int|long|float|double|char|boolean){1}[\\[\\]]*(\\ |\\t)+[?:A-Za-z0-9]+";
-    final String construtorVazioRegex = "(public|protected|private|static)(\\ |\t)+[A-Za-z-0-9]+(\\ |\\t)*\\((\\ |\\t)*\\)";
-    final String construtorParametrizadoRegex = "(public|protected|private|static)(\\ |\t)+[A-Za-z-0-9]+(\\ |\\t)*\\((\\ |\\t|.*)*\\)";
+    //final String construtorVazioRegex = "(public|protected|private|static)(\\ |\t)+[A-Za-z-0-9]+(\\ |\\t)*\\((\\ |\\t)*\\)";
+    final String construtorVazioRegex = "(public|protected|private|static)(\\ |\t)+[A-Za-z-0-9]+(\\ |\\t)*\\(\\)";
+    final String construtorParametrizadoRegex = "(public|protected|private|static)(\\ |\t)+[A-Za-z-0-9]+(\\ |\\t)*\\([\\ \\,\\<\\>A-Za-z-0-9]+\\)";
 
 
     final String toStringPadrao = "public[\\ \\t]+String[\\ \\t]+toString[\\ \\t]*\\([\\ \\t]*\\)[\\ \\t]*\\{";
@@ -365,11 +366,13 @@ public class Ficheiro {
     }
 
     public void checkConstrutorVazio(String line){
-        if(RegularExpression.findAll(line, this.construtorVazioRegex).size() > 0)this.construtoVazio = true;
+        if(RegularExpression.findAll(line, this.construtorVazioRegex).size() > 0)
+            this.construtoVazio = true;
     }
 
     public void checkConstrutorParametrizado(String line){
-        if(RegularExpression.findAll(line, this.construtorParametrizadoRegex).size() > 0)this.constutorParametrizado = true;
+        if(RegularExpression.findAll(line, this.construtorParametrizadoRegex).size() > 0)
+            this.constutorParametrizado = true;
     }
 
     @Override
