@@ -38,8 +38,6 @@ public class GProject {
                 ficheiro.numeroLinhas = ficheiro.linhas.length;
                 ficheiro.run();
                 ficheiros.put(file.getName(), ficheiro);
-                if(ficheiro.fileName.equals("Ficheiro.java"))
-                System.out.println(ficheiro.methods);
             }else{
                 readFolder(file.getAbsolutePath());
             }
@@ -49,39 +47,34 @@ public class GProject {
 
     public void printListaCodeSmells(String filename)throws Exception{
         FileWriter fw = new FileWriter(GProject.output+filename+".html");
-        fw.write("<html>\n" +
-                "    <body>\n" +
-                "        <ul>");
 
-        fw.write("<li><a href=\"" + filename + "LongMethod.html\">Long Method</a></li>\n");
-        fw.write("<li><a href=\"" + filename + "LongMethod.html\">Long Method</a></li>\n");
-        fw.write("<li><a href=\"" + filename + "LongMethod.html\">Long Method</a></li>\n");
-        fw.write("<li><a href=\"" + filename + "LongMethod.html\">Long Method</a></li>\n");
-        fw.write("<li><a href=\"" + filename + "LongMethod.html\">Long Method</a></li>\n");
-        fw.write("<li><a href=\"" + filename + "LongMethod.html\">Long Method</a></li>\n");
+        PrettyPrint.headerHTML(fw, "Normas encontradas no ficheiro: " + filename + ".java");
 
+        //  TODO aqui coloquem o link para o vosso ficheiro, lembrem-se o vosso ficheiro tem que ser "nomeDoFicheiroAnalisado + CodeSmell + html, p.e GProjectLongMethod.html
+        fw.write("<li><a href=\"" + filename + "LongMethod.html\">Long Method</a></li>\n");
+        fw.write("<li><a href=\"" + filename + "TiposPrimitivos.html\">Tipos Primitivos</a></li>\n");
 
-        fw.write("</ul>\n" +
-                "    </body>\n" +
-                "</html>");
+        PrettyPrint.footerHTML(fw);
         fw.close();
     }
 
     public void printFicheiros()throws Exception {
         FileWriter fw = new FileWriter(GProject.output+"index.html");
-        fw.write("<html>\n" +
-                "    <body>\n" +
-                "        <ul>");
+        PrettyPrint.headerHTML(fw, "Ficheiros analisados: ");
         for (Map.Entry<String,Ficheiro> entry : ficheiros.entrySet()) {
             String newFileName = entry.getKey().split("\\.")[0];
             fw.write("<li><a href=\"" + newFileName + ".html\">" + entry.getKey() + "</a></li>\n");
 
-            printListaCodeSmells(newFileName);
-            PrettyPrint.LongMethod(entry.getValue());
+            printListaCodeSmells(newFileName);  //  índice de cada ficheiro
+
+            //  a seguir vamso gerar os respetivos ficheiros de cada codeSmell
+
+            Ficheiro ficheiro = entry.getValue();
+
+            PrettyPrint.LongMethod(ficheiro);
+            PrettyPrint.tiposPrimitivos(ficheiro);
         }
-        fw.write("</ul>\n" +
-                "    </body>\n" +
-                "</html>");
+        PrettyPrint.footerHTML(fw);
         fw.close();
 
     }
