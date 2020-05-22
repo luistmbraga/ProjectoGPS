@@ -20,34 +20,34 @@ public class PrettyPrint {
      * @returnm retorna a string HTML da tabela
      */
     private static String convertMapStringIntegerToHTMLTable(Map<String, Integer> data, String column1, String column2){
-        String result = "<table>\n" +
-                "  <tr>\n" +
-                "    <th>" + column1 + "</th>\n" +
-                "    <th>" + column2 + "</th>\n" +
-                "  </tr>\n";
+        String result = "<table>" +
+                "  <tr>" +
+                "    <th>" + column1 + "</th>" +
+                "    <th>" + column2 + "</th>" +
+                "  </tr>";
         List<Map.Entry<String, Integer>> list = new ArrayList<>(data.entrySet());
         list.sort(Map.Entry.comparingByValue());
         for (Map.Entry<String, Integer> entry : list) {
-            result += "  <tr>\n" +
-                    "    <td>" + entry.getKey() + "</td>\n" +
-                    "    <td>" + entry.getValue() + "</td>\n" +
-                    "  </tr>\n";
+            result += "  <tr>" +
+                    "    <td>" + entry.getKey() + "</td>" +
+                    "    <td>" + entry.getValue() + "</td>" +
+                    "  </tr>";
         }
         result += "</table>";
         return result;
     }
 
     private static String convertListIntegerToHTMLTable(List<Integer> data, String column1){
-        String result = "<table>\n" +
-                "  <tr>\n" +
-                "    <th>" + column1 + "</th>\n" +
-                "  </tr>\n";
+        String result = "<table>" +
+                "  <tr>" +
+                "    <th>" + column1 + "</th>" +
+                "  </tr>";
 
         Collections.sort(data);
         for (Integer value : data) {
-            result += "  <tr>\n" +
-                    "    <td>" + value + "</td>\n" +
-                    "  </tr>\n";
+            result += "  <tr>" +
+                    "    <td>" + value + "</td>" +
+                    "  </tr>";
         }
         result += "</table>";
         return result;
@@ -95,18 +95,18 @@ public class PrettyPrint {
     }
 
     private static String printTableLongMethod(Map<String,Method> map,String col1,String col2) {
-        String result = "<table>\n" +
-                "  <tr>\n" +
-                "    <th>" + col1 + "</th>\n" +
-                "    <th>" + col2 + "</th>\n" +
-                "  </tr>\n";
+        String result = "<table>" +
+                "  <tr>" +
+                "    <th>" + col1 + "</th>" +
+                "    <th>" + col2 + "</th>" +
+                "  </tr>";
         for (Map.Entry<String, Method> entry : map.entrySet()) {
             for (CodeSmell codeSmell : entry.getValue().codeSmells) {
                 if (codeSmell.codeSmell.equals(CodeSmellType.LongMethod)) {
-                    result += "  <tr>\n" +
-                            "    <td>" + entry.getKey() + "</td>\n" +
-                            "    <td>" + codeSmell.linhas + "</td>\n" +
-                            "  </tr>\n";
+                    result += "  <tr>" +
+                            "    <td>" + entry.getKey() + "</td>" +
+                            "    <td>" + codeSmell.linhas + "</td>" +
+                            "  </tr>";
                 }
             }
         }
@@ -171,4 +171,6 @@ public class PrettyPrint {
     }
 
     //  CONSTRUTORES -------------------------------------------------------------------------------
+
+    //  TODO verifiquem os métodos genéricos acima, já foram definidos métodos que fazem tables HTML a partir de Maps e Lists
 }

@@ -51,10 +51,10 @@ public class GProject {
         PrettyPrint.headerHTML(fw, "Normas encontradas no " + filename + ".java");
 
         //  TODO aqui coloquem o link para o vosso ficheiro, lembrem-se o vosso ficheiro tem que ser "nomeDoFicheiroAnalisado + CodeSmell + html, p.e GProjectLongMethod.html
-        fw.write("<li><a href=\"" + filename + "LongMethod.html\">Long Method</a></li>\n");
-        fw.write("<li><a href=\"" + filename + "TiposPrimitivos.html\">Tipos Primitivos</a></li>\n");
-        fw.write("<li><a href=\"" + filename + "Comentarios.html\">Comentários no interior de métodos</a></li>\n");
-        fw.write("<li><a href=\"" + filename + "Construtores.html\">Ausência de Construtores</a></li>\n");
+        fw.write("<li><a href=\"" + filename + "LongMethod.html\">Long Method</a></li>");
+        fw.write("<li><a href=\"" + filename + "TiposPrimitivos.html\">Tipos Primitivos</a></li>");
+        fw.write("<li><a href=\"" + filename + "Comentarios.html\">Comentários no interior de métodos</a></li>");
+        fw.write("<li><a href=\"" + filename + "Construtores.html\">Ausência de Construtores</a></li>");
 
         PrettyPrint.footerHTML(fw);
         fw.close();
@@ -65,7 +65,7 @@ public class GProject {
         PrettyPrint.headerHTML(fw, "Ficheiros analisados: ");
         for (Map.Entry<String,Ficheiro> entry : ficheiros.entrySet()) {
             String newFileName = entry.getKey().split("\\.")[0];
-            fw.write("<li><a href=\"" + newFileName + ".html\">" + entry.getKey() + "</a></li>\n");
+            fw.write("<li><a href=\"" + newFileName + ".html\">" + entry.getKey() + "</a></li>");
 
             printListaCodeSmells(newFileName);  //  índice de cada ficheiro
 
