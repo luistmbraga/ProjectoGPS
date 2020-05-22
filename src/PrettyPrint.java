@@ -1,8 +1,6 @@
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -72,10 +70,7 @@ public class PrettyPrint {
 
         headerHTML(fw, "Long Method");
 
-        if(ficheiro.methods.size() != 0)
-            fw.write(printTableLongMethod(ficheiro.methods,"Método","Linhas"));
-        else
-            fw.write("Não foram encontrados problemas com esta norma!");
+        fw.write(printTableLongMethod(ficheiro.methods,"Método","Linhas"));
 
         footerHTML(fw);
 
