@@ -98,6 +98,8 @@ public class PrettyPrint {
             }
         }
         // System.out.println(aux);
+        if(aux.size() == 0)
+            return "Não foram encontrados problemas com esta norma!";
 
         List<Map.Entry<String, CodeSmell> > list = new LinkedList<Map.Entry<String, CodeSmell> >(aux.entrySet());
 

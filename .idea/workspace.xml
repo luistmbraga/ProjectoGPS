@@ -1,29 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d200581c-7329-43c7-bbd9-1022af95650e" name="Default Changelist" comment="Esqueleto da parte gráfica">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/projeto-gps/Ficheiro.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/projeto-gps/Ficheiro.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/projeto-gps/GProject.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/projeto-gps/GProject.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/projeto-gps/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/projeto-gps/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/CodeSmell.html" beforeDir="false" afterPath="$PROJECT_DIR$/output/CodeSmell.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/Ficheiro.html" beforeDir="false" afterPath="$PROJECT_DIR$/output/Ficheiro.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/FicheiroComentarios.html" beforeDir="false" afterPath="$PROJECT_DIR$/output/FicheiroComentarios.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/FicheiroLongMethod.html" beforeDir="false" afterPath="$PROJECT_DIR$/output/FicheiroLongMethod.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/FicheiroTiposPrimitivos.html" beforeDir="false" afterPath="$PROJECT_DIR$/output/FicheiroTiposPrimitivos.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/GProject.html" beforeDir="false" afterPath="$PROJECT_DIR$/output/GProject.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/GProjectComentarios.html" beforeDir="false" afterPath="$PROJECT_DIR$/output/GProjectComentarios.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/Main.html" beforeDir="false" afterPath="$PROJECT_DIR$/output/Main.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/Method.html" beforeDir="false" afterPath="$PROJECT_DIR$/output/Method.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/PrettyPrint.html" beforeDir="false" afterPath="$PROJECT_DIR$/output/PrettyPrint.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/PrettyPrintComentarios.html" beforeDir="false" afterPath="$PROJECT_DIR$/output/PrettyPrintComentarios.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/PrettyPrintLongMethod.html" beforeDir="false" afterPath="$PROJECT_DIR$/output/PrettyPrintLongMethod.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/PrettyPrintTiposPrimitivos.html" beforeDir="false" afterPath="$PROJECT_DIR$/output/PrettyPrintTiposPrimitivos.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/RegularExpression.html" beforeDir="false" afterPath="$PROJECT_DIR$/output/RegularExpression.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/output/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Ficheiro.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Ficheiro.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GProject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GProject.java" afterDir="false" />
+    <list default="true" id="d200581c-7329-43c7-bbd9-1022af95650e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/src/PrettyPrint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PrettyPrint.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -92,7 +70,14 @@
       <option name="presentableId" value="Default" />
       <updated>1590323717273</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Metodos Sem Exceções/ Metodos sem input/outpu generico">
+      <created>1590328796879</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1590328796879</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -110,6 +95,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Esqueleto da parte gráfica" />
-    <option name="LAST_COMMIT_MESSAGE" value="Esqueleto da parte gráfica" />
+    <MESSAGE value="Metodos Sem Exceções/ Metodos sem input/outpu generico" />
+    <option name="LAST_COMMIT_MESSAGE" value="Metodos Sem Exceções/ Metodos sem input/outpu generico" />
   </component>
 </project>
