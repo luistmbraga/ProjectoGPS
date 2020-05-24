@@ -302,7 +302,10 @@ public class Ficheiro {
 
         if(l.size() != 0){
             String c = l.get(0);
-            if (c.contains("extends")) { /*System.out.println("Classe que usa herança");*/ }
+            if (c.contains("extends")) {
+                CodeSmell cs = new CodeSmell(CodeSmellType.UsoHeranca, linhaAtual);
+                this.codeSmells.add(cs);
+            }
             if (c.contains("implements")) { /*System.out.println("Classe que implementa interfaces");*/ }
 
             List<String> lAux = RegularExpression.findAll(c, classNamePadrao2);

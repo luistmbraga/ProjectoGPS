@@ -121,6 +121,18 @@ public class PrettyPrint {
         return result;
     }
 
+    public static boolean existeCodeSmellFicheiro(List<CodeSmell> codeSmells, CodeSmellType codesmell){
+        boolean existe = false;
+
+        for (CodeSmell smell: codeSmells)
+            if(smell.codeSmell.equals(codesmell)){
+                existe = true;
+                break;
+            }
+
+        return existe;
+    }
+
     //  MÉTODOS GENÉRICOS #############################################################################################
     //  ###############################################################################################################
 
@@ -175,7 +187,7 @@ public class PrettyPrint {
         fw.close();
     }
 
-    //  METODO SEM EXCESSAO---------------------------------------------------------------------------
+    //  METODO SEM Input/Output Generico ---------------------------------------------------------------------------
 
     //  TIPOS PRIMITIVOS ---------------------------------------------------------------------------
 
@@ -232,6 +244,67 @@ public class PrettyPrint {
     }
 
     //  CONSTRUTORES -------------------------------------------------------------------------------
+
+    //  VARIAVEIS PRIVADAS ---------------------------------------------------------------------------
+
+    public static void variaveisPrivadas(Ficheiro ficheiro) throws IOException{
+        String newFileName = ficheiro.fileName.split("\\.")[0];
+        FileWriter fw = new FileWriter(GProject.output +newFileName+"VariaveisPrivadas.html");
+        headerHTML(fw, "Ausência de Variáveis Privadas no " + ficheiro.fileName);
+
+        fw.write("<ul>");
+
+        if (existeCodeSmellFicheiro(ficheiro.codeSmells, CodeSmellType.VariaveisPrivadas))
+            fw.write("<li><p style=\"color: red\";>Variáveis desta classe encontram-se privadas e protegidas. " +
+                    "No entanto, verifique se todas são privadas.</p></li>");
+        else
+            fw.write("<li><p style=\"color: red\";>As suas variáveis encontram-se desprotegidas e podem ser acedidas de outras classes.</p></li>");
+
+        fw.write("</ul>");
+
+        footerHTML(fw);
+        fw.close();
+
+    }
+
+    //  VARIAVEIS PRIVADAS ---------------------------------------------------------------------------
+
+    //  VARIAVEIS COM UM CARACTER ---------------------------------------------------------------------------
+
+    public static void variaveisComUmCaracter(Ficheiro ficheiro) throws IOException{
+        String newFileName = ficheiro.fileName.split("\\.")[0];
+        FileWriter fw = new FileWriter(GProject.output +newFileName+"VariaveisUmCaracter.html");
+        headerHTML(fw, "Variáveis com nomes demasiado simples no " + ficheiro.fileName);
+
+        fw.write(printTableLongMethod(ficheiro.methods,"Método","Linhas",CodeSmellType.VariaveisUmCaracter));
+
+        footerHTML(fw);
+        fw.close();
+    }
+
+    //  VARIAVEIS COM UM CARACTER ---------------------------------------------------------------------------
+
+    //  USO DE HERANCA ---------------------------------------------------------------------------
+
+    public static void usoDeHeranca(Ficheiro ficheiro) throws IOException{
+        String newFileName = ficheiro.fileName.split("\\.")[0];
+        FileWriter fw = new FileWriter(GProject.output +newFileName+"UsoHeranca.html");
+        headerHTML(fw, "Uso de herança no " + ficheiro.fileName);
+
+        if (existeCodeSmellFicheiro(ficheiro.codeSmells, CodeSmellType.UsoHeranca)){
+            fw.write("<ul>");
+            fw.write("<li><p style=\"color: red\";>Neste ficheiro é utilizada herança. Atenção !</p></li>");
+            fw.write("</ul>");
+        }
+        else
+            fw.write("Não foram encontrados problemas com esta norma!");
+
+        footerHTML(fw);
+        fw.close();
+    }
+
+    //  USO DE HERANCA ---------------------------------------------------------------------------
+
 
     //  TODO verifiquem os métodos genéricos acima, já foram definidos métodos que fazem tables HTML a partir de Maps e Lists
 }

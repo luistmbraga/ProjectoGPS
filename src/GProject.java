@@ -58,6 +58,9 @@ public class GProject {
         fw.write("<li><a href=\"" + filename + "Construtores.html\">Ausência de Construtores</a></li>");
         fw.write("<li><a href=\"" + filename + "Excessao.html\">Métodos sem Exceção</a></li>");
         fw.write("<li><a href=\"" + filename + "InputOutput.html\">Métodos sem Input/Output Genérico</a></li>");
+        fw.write("<li><a href=\"" + filename + "VariaveisPrivadas.html\">Ausência de Variáveis Privadas</a></li>");
+        fw.write("<li><a href=\"" + filename + "VariaveisUmCaracter.html\">Variáveis com um caracter</a></li>");
+        fw.write("<li><a href=\"" + filename + "UsoHeranca.html\">Utilização de Herança</a></li>");
 
         PrettyPrint.footerHTML(fw);
         fw.close();
@@ -82,6 +85,9 @@ public class GProject {
             PrettyPrint.construtores(ficheiro);
             PrettyPrint.metodoSemExceccao(ficheiro);
             PrettyPrint.inputOutput(ficheiro);
+            PrettyPrint.variaveisPrivadas(ficheiro);
+            PrettyPrint.variaveisComUmCaracter(ficheiro);
+            PrettyPrint.usoDeHeranca(ficheiro);
         }
         PrettyPrint.footerHTML(fw);
         fw.close();

@@ -2,7 +2,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 enum CodeSmellType {LongMethod, ComentáriosNoMeioDoCodigo, WhileTrue, NomeFicheiroErrado, NomeClasseLetraMinuscula,
-                    VariaveisPrivadas, VariaveisUmCaracterForaMetodo, VariaveisUmCaracter, InputOutputGenerico,Excessao, NoToString, NoClone, NoEquals, LargeClass, ManyFinals};
+                    VariaveisPrivadas, VariaveisUmCaracterForaMetodo, VariaveisUmCaracter, InputOutputGenerico,Excessao,
+                    NoToString, NoClone, NoEquals, LargeClass, ManyFinals, UsoHeranca};
 
 public class CodeSmell {
     //TODO colocar os restantes!!!
