@@ -1,9 +1,6 @@
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class PrettyPrint {
 
@@ -76,6 +73,52 @@ public class PrettyPrint {
         fw.close();
     }
 
+
+    /**
+     * Converte um Map do tipo <String, Method> para um tabela HTML correspondente a um dado codeSmell (Ordenada pela linha do codeSmell)
+     * @param map dados (Map)
+     * @param col1 nome da coluna de 1 da tabela
+     * @param col2 nome da coluna de 2 da tabela
+     * @param codesmell codeSmell pretendido
+     * @returnm retorna a string HTML da tabela
+     */
+    private static String printTableLongMethod(Map<String,Method> map,String col1,String col2,CodeSmellType codesmell) {
+        String result = "<table>" +
+                "  <tr>" +
+                "    <th>" + col1 + "</th>" +
+                "    <th>" + col2 + "</th>" +
+                "  </tr>";
+        Map<String,CodeSmell> aux = new HashMap<>();
+        for (Map.Entry<String, Method> entry : map.entrySet()) {
+            for (CodeSmell codeSmell : entry.getValue().codeSmells) {
+                if (codeSmell.codeSmell.equals(codesmell)) {
+                    aux.put(entry.getKey(),codeSmell);
+
+                }
+            }
+        }
+        // System.out.println(aux);
+
+        List<Map.Entry<String, CodeSmell> > list = new LinkedList<Map.Entry<String, CodeSmell> >(aux.entrySet());
+
+        Collections.sort(list, new Comparator<Map.Entry<String, CodeSmell> >() {
+            public int compare(Map.Entry<String, CodeSmell> o1,
+                               Map.Entry<String, CodeSmell> o2)
+            {
+                return (o1.getValue().linhas.get(0)).compareTo(o2.getValue().linhas.get(0));
+            }
+        });
+
+        for(Map.Entry<String, CodeSmell> entry : list) {
+            result += "  <tr>" +
+                    "    <td>" + entry.getKey() + "</td>" +
+                    "    <td>" + entry.getValue().linhas + "</td>" +
+                    "  </tr>";
+        }
+        result += "</table>";
+        return result;
+    }
+
     //  MÉTODOS GENÉRICOS #############################################################################################
     //  ###############################################################################################################
 
@@ -87,34 +130,50 @@ public class PrettyPrint {
 
         headerHTML(fw, "Long Method no " + ficheiro.fileName);
 
-        fw.write(printTableLongMethod(ficheiro.methods,"Método","Linhas"));
+        fw.write(printTableLongMethod(ficheiro.methods,"Método","Linhas",CodeSmellType.LongMethod));
 
         footerHTML(fw);
 
         fw.close();
     }
 
-    private static String printTableLongMethod(Map<String,Method> map,String col1,String col2) {
-        String result = "<table>" +
-                "  <tr>" +
-                "    <th>" + col1 + "</th>" +
-                "    <th>" + col2 + "</th>" +
-                "  </tr>";
-        for (Map.Entry<String, Method> entry : map.entrySet()) {
-            for (CodeSmell codeSmell : entry.getValue().codeSmells) {
-                if (codeSmell.codeSmell.equals(CodeSmellType.LongMethod)) {
-                    result += "  <tr>" +
-                            "    <td>" + entry.getKey() + "</td>" +
-                            "    <td>" + codeSmell.linhas + "</td>" +
-                            "  </tr>";
-                }
-            }
-        }
-        result += "</table>";
-        return result;
-    }
+
 
     // LONG METHOD ---------------------------------------------------------------------------------
+
+    //  METODO SEM EXCESSAO ---------------------------------------------------------------------------
+
+    public static void metodoSemExceccao(Ficheiro ficheiro)throws Exception{
+        String newFileName = ficheiro.fileName.split("\\.")[0];
+        FileWriter fw = new FileWriter(GProject.output +newFileName+"Excessao.html");
+
+        headerHTML(fw, "Método sem Excessão no " + ficheiro.fileName);
+
+        fw.write(printTableLongMethod(ficheiro.methods,"Método","Linhas",CodeSmellType.Excessao));
+
+        footerHTML(fw);
+
+        fw.close();
+    }
+
+    //  METODO SEM EXCESSAO---------------------------------------------------------------------------
+
+    //  METODO SEM Input/Output Generico ---------------------------------------------------------------------------
+
+    public static void inputOutput(Ficheiro ficheiro)throws Exception{
+        String newFileName = ficheiro.fileName.split("\\.")[0];
+        FileWriter fw = new FileWriter(GProject.output +newFileName+"InputOutput.html");
+
+        headerHTML(fw, "Método sem Input/Output Genérico " + ficheiro.fileName);
+
+        fw.write(printTableLongMethod(ficheiro.methods,"Método","Linhas",CodeSmellType.InputOutputGenerico));
+
+        footerHTML(fw);
+
+        fw.close();
+    }
+
+    //  METODO SEM EXCESSAO---------------------------------------------------------------------------
 
     //  TIPOS PRIMITIVOS ---------------------------------------------------------------------------
 

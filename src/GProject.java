@@ -37,6 +37,7 @@ public class GProject {
                 ficheiro.linhas = readLines(file.getAbsolutePath());
                 ficheiro.numeroLinhas = ficheiro.linhas.length;
                 ficheiro.run();
+                //System.out.println(ficheiro.methods);
                 ficheiros.put(file.getName(), ficheiro);
             }else{
                 readFolder(file.getAbsolutePath());
@@ -55,6 +56,8 @@ public class GProject {
         fw.write("<li><a href=\"" + filename + "TiposPrimitivos.html\">Tipos Primitivos</a></li>");
         fw.write("<li><a href=\"" + filename + "Comentarios.html\">Comentários no interior de métodos</a></li>");
         fw.write("<li><a href=\"" + filename + "Construtores.html\">Ausência de Construtores</a></li>");
+        fw.write("<li><a href=\"" + filename + "Excessao.html\">Métodos sem Exceção</a></li>");
+        fw.write("<li><a href=\"" + filename + "InputOutput.html\">Métodos sem Input/Output Genérico</a></li>");
 
         PrettyPrint.footerHTML(fw);
         fw.close();
@@ -77,6 +80,8 @@ public class GProject {
             PrettyPrint.tiposPrimitivos(ficheiro);
             PrettyPrint.comentarios(ficheiro);
             PrettyPrint.construtores(ficheiro);
+            PrettyPrint.metodoSemExceccao(ficheiro);
+            PrettyPrint.inputOutput(ficheiro);
         }
         PrettyPrint.footerHTML(fw);
         fw.close();

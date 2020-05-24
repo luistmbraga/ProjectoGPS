@@ -250,17 +250,19 @@ public class Ficheiro {
         }
     }
 
-    public void checkInputOutputGenerico(String line){
+    public List<Integer> checkInputOutputGenerico(String line){
 
         String pattern = inputOutputPadrao;
         List<String> l = RegularExpression.findAll(line, pattern);
+       // System.out.println("INPUT/OUTPUT: "+ l);
 
         if(l.size() != 0){
-            //System.out.println("INPUT/OUTPUT Não Generico: "+ line);
+           // System.out.println("INPUT/OUTPUT Não Generico: "+ line);
             Method method = methods.get(nomeMetodo);
             CodeSmell cs = new CodeSmell(CodeSmellType.InputOutputGenerico, linhaAtual);
             method.codeSmells.add(cs);
         }
+        return new ArrayList<>(); /// Apenas para testar este metodo
     }
 
     public void checkExcessao(String line) throws Exception{

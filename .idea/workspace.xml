@@ -1,9 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="38fa66ad-4e21-43c3-9eec-2af15f20c5d8" name="Default Changelist" comment="">
+    <list default="true" id="d200581c-7329-43c7-bbd9-1022af95650e" name="Default Changelist" comment="Esqueleto da parte gráfica">
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/projeto-gps/Ficheiro.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/projeto-gps/Ficheiro.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/projeto-gps/GProject.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/projeto-gps/GProject.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/projeto-gps/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/projeto-gps/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/CodeSmell.html" beforeDir="false" afterPath="$PROJECT_DIR$/output/CodeSmell.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/Ficheiro.html" beforeDir="false" afterPath="$PROJECT_DIR$/output/Ficheiro.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/FicheiroComentarios.html" beforeDir="false" afterPath="$PROJECT_DIR$/output/FicheiroComentarios.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/FicheiroLongMethod.html" beforeDir="false" afterPath="$PROJECT_DIR$/output/FicheiroLongMethod.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/FicheiroTiposPrimitivos.html" beforeDir="false" afterPath="$PROJECT_DIR$/output/FicheiroTiposPrimitivos.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/GProject.html" beforeDir="false" afterPath="$PROJECT_DIR$/output/GProject.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/GProjectComentarios.html" beforeDir="false" afterPath="$PROJECT_DIR$/output/GProjectComentarios.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/Main.html" beforeDir="false" afterPath="$PROJECT_DIR$/output/Main.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/Method.html" beforeDir="false" afterPath="$PROJECT_DIR$/output/Method.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/PrettyPrint.html" beforeDir="false" afterPath="$PROJECT_DIR$/output/PrettyPrint.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/PrettyPrintComentarios.html" beforeDir="false" afterPath="$PROJECT_DIR$/output/PrettyPrintComentarios.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/PrettyPrintLongMethod.html" beforeDir="false" afterPath="$PROJECT_DIR$/output/PrettyPrintLongMethod.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/PrettyPrintTiposPrimitivos.html" beforeDir="false" afterPath="$PROJECT_DIR$/output/PrettyPrintTiposPrimitivos.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/RegularExpression.html" beforeDir="false" afterPath="$PROJECT_DIR$/output/RegularExpression.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/output/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Ficheiro.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Ficheiro.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GProject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GProject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PrettyPrint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PrettyPrint.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -11,26 +32,18 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectId" id="1bZrofiBE753UbnDwPEedz4yWKP" />
-  <component name="ProjectViewState">
-    <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="true" />
-    <option name="showLibraryContents" value="true" />
-  </component>
+  <component name="ProjectId" id="1cM1bB25WK7gwqXZN56AghSJj4U" />
   <component name="PropertiesComponent">
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="node.js.detected.package.eslint" value="true" />
-    <property name="node.js.detected.package.tslint" value="true" />
-    <property name="node.js.path.for.package.eslint" value="project" />
-    <property name="node.js.path.for.package.tslint" value="project" />
-    <property name="node.js.selected.package.eslint" value="(autodetect)" />
-    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.0" />
@@ -47,31 +60,17 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.GProject">
+  <component name="RunManager">
     <configuration name="GProject" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="GProject" />
       <module name="projeto-gps" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Main" />
-      <module name="projeto-gps" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <list>
-      <item itemvalue="Application.GProject" />
-      <item itemvalue="Application.Main" />
-    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.GProject" />
-        <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
   </component>
@@ -79,27 +78,22 @@
     <configuration />
   </component>
   <component name="TaskManager">
-    <task active="true" id="Default" summary="Default task">
-      <changelist id="38fa66ad-4e21-43c3-9eec-2af15f20c5d8" name="Default Changelist" comment="" />
-      <created>1588850632688</created>
-      <option name="number" value="Default" />
-      <option name="presentableId" value="Default" />
-      <updated>1588850632688</updated>
-      <workItem from="1589451349862" duration="5241000" />
-      <workItem from="1589463911169" duration="88000" />
-    </task>
-    <task id="LOCAL-00001" summary="8,1,14 Alienas Feitas">
-      <created>1589378772843</created>
+    <task id="LOCAL-00001" summary="Esqueleto da parte gráfica">
+      <created>1590103336373</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1589378772843</updated>
+      <updated>1590103336373</updated>
+    </task>
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d200581c-7329-43c7-bbd9-1022af95650e" name="Default Changelist" comment="Esqueleto da parte gráfica" />
+      <created>1590323717273</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1590323717273</updated>
     </task>
     <option name="localTasksCounter" value="2" />
     <servers />
-  </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -115,46 +109,7 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="8,1,14 Alienas Feitas" />
-    <option name="LAST_COMMIT_MESSAGE" value="8,1,14 Alienas Feitas" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="730" y="220" key="#com.intellij.ide.util.MemberChooser" timestamp="1589456535025">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="730" y="220" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1589456535025" />
-    <state x="618" y="301" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1589138269543">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="618" y="301" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.0.1536.824@0.0.1536.824" timestamp="1589138269543" />
-    <state width="1877" height="317" key="GridCell.Tab.0.bottom" timestamp="1589456595409">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1493" height="70" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1589149566850" />
-    <state width="1877" height="317" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1589456595409" />
-    <state width="1877" height="317" key="GridCell.Tab.0.center" timestamp="1589456595409">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1493" height="70" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1589149566850" />
-    <state width="1877" height="317" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1589456595409" />
-    <state width="1877" height="317" key="GridCell.Tab.0.left" timestamp="1589456595409">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1493" height="70" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1589149566850" />
-    <state width="1877" height="317" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1589456595409" />
-    <state width="1877" height="317" key="GridCell.Tab.0.right" timestamp="1589456595409">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1493" height="70" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1589149566850" />
-    <state width="1877" height="317" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1589456595409" />
-    <state x="656" y="343" key="com.intellij.ide.util.TipDialog" timestamp="1589451349281">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="465" y="236" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1589138247647" />
-    <state x="656" y="343" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1589451349281" />
-    <state x="616" y="240" key="run.anything.popup" timestamp="1589454966833">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="616" y="240" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1589454966833" />
+    <MESSAGE value="Esqueleto da parte gráfica" />
+    <option name="LAST_COMMIT_MESSAGE" value="Esqueleto da parte gráfica" />
   </component>
 </project>
