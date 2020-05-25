@@ -71,6 +71,14 @@ public class GProject {
     }
 
     public void printFicheiros()throws Exception {
+
+        // Apaga a pasta "output/ caso ela já exista e de seguida cria uma pasta nova
+        File dir = new File(GProject.output);
+        if (dir.exists()) {
+            dir.delete();
+        }
+        dir.mkdirs();
+
         FileWriter fw = new FileWriter(GProject.output+"index.html");
         PrettyPrint.headerHTML(fw, "Ficheiros analisados: ");
         for (Map.Entry<String,Ficheiro> entry : ficheiros.entrySet()) {
@@ -101,7 +109,6 @@ public class GProject {
 
 
     public static void main(String[] args) throws Exception {
-        System.err.println("A pasta output/ tem que ser criada!!!!");
         String filename = "src/Ficheiro.java";
         GProject gProject = new GProject();
         gProject.readFolder(filename);
