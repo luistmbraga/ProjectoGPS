@@ -57,7 +57,8 @@ public class PrettyPrint {
      * @throws IOException
      */
     public static void headerHTML(FileWriter fw, String title) throws IOException {
-        fw.write("<html>" +importCss);
+        fw.write("<html>" + importCss);
+        fw.write("<head><meta charset=\"UTF-8\"></head>");
         fw.write("<body>" +
                 "   <h2>" + title + "</h2>");
     }

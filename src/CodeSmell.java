@@ -20,11 +20,6 @@ public class CodeSmell {
         this.linhas.add(linha);
     }
 
-    public CodeSmell(List<Integer> linhas) {
-        this.linhas = linhas;
-    }
-
-
     @Override
     public String toString() {
         return "CodeSmell{" +

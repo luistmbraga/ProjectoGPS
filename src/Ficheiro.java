@@ -49,9 +49,6 @@ public class Ficheiro {
     // nome do método atual
     String nomeMetodo;
 
-    // contador de variáveis final
-    int finalCounter = 0;
-
     final String nomeMetodoPadrao = "(public|protected|private|static)(\\ |\\t)+(?!class)[A-Za-z<>]+(\\ |\\t)+[A-Za-z]+(\\ |\\t)*(\\ |\\(.*\\{)";
     final String chavetasPadrao = "[\\{\\}]";
     final String whileTruePadrao = "while\\(true\\)\\{";
@@ -67,26 +64,16 @@ public class Ficheiro {
     //final String construtorVazioRegex = "(public|protected|private|static)(\\ |\t)+[A-Za-z-0-9]+(\\ |\\t)*\\((\\ |\\t)*\\)";
     final String construtorVazioRegex = "(public|protected|private|static)(\\ |\t)+[A-Za-z-0-9]+(\\ |\\t)*\\(\\)";
     final String construtorParametrizadoRegex = "(public|protected|private|static)(\\ |\t)+[A-Za-z-0-9]+(\\ |\\t)*\\([\\ \\,\\<\\>A-Za-z-0-9]+\\)";
-
-
     final String toStringPadrao = "public[\\ \\t]+String[\\ \\t]+toString[\\ \\t]*\\([\\ \\t]*\\)[\\ \\t]*\\{";
-    String clonePadrao = "public[\\ \\t]+" + className + "[\\ \\t]+clone[\\ \\t]*\\([\\ \\t]*" + className + "[\\ \\t]+.*[\\ \\t]*\\)[\\ \\t]*\\{"; // definido depois de encontrada a classname
-    String equalsPadrao = "public[\\ \\t]+boolean[\\ \\t]+equals[\\ \\t]*\\([\\ \\t]*" + className + "[\\ \\t]+.*[\\ \\t]*\\)[\\ \\t]*\\{"; // definido depois de encontrada a classname
-
+    String clonePadrao;
+    String equalsPadrao;
     final String finalPadrao = "final[\\ \\t]+";
     final int MAX_FINAL = 5; // + que 5 variáveis final é code smell
     final int MAX_LINES = 200; // + que 200 linhas é considerada large class
     final int MAX_METHODS = 10; // + que 10 métodos é considerada large class
 
-
-    public Ficheiro() {
-        this.codeSmells = new ArrayList<>();
-        this.variaveisNaoPrivadas = new HashMap<>();
-        this.methods = new HashMap<>();
-        this.usoVariaveisPrimitivas = new HashMap<>();
-        this.dependencias = new ArrayList<>();
-        this.linhasDeComentarios = new ArrayList<>();
-    }
+    // lista temporária apenas para guardar as linhas onde são declaradas variáveis "final"
+    List<Integer> finalLines;
 
 
     public Ficheiro(String fileName) {
@@ -97,31 +84,18 @@ public class Ficheiro {
         this.usoVariaveisPrimitivas = new HashMap<>();
         this.dependencias = new ArrayList<>();
         this.linhasDeComentarios = new ArrayList<>();
+        this.finalLines = new ArrayList<>();
     }
 
-    public Ficheiro(String className, String[] linhas, int numeroLinhas, List<CodeSmell> codeSmells, boolean toString, boolean equals, boolean clone, boolean construtoVazio, boolean constutorParametrizado, boolean construtorCopia, Map<String, Integer> variaveisNaoPrivadas, Map<String, Method> methods, Map<String, Integer> usoVariaveisPrimitivas, List<String> dependencias, List<Integer> linhasDeComentarios) {
-        this.className = className;
-        this.linhas = linhas;
-        this.numeroLinhas = numeroLinhas;
-        this.codeSmells = codeSmells;
-        this.toString = toString;
-        this.equals = equals;
-        this.clone = clone;
-        this.construtoVazio = construtoVazio;
-        this.constutorParametrizado = constutorParametrizado;
-        this.construtorCopia = construtorCopia;
-        this.variaveisNaoPrivadas = variaveisNaoPrivadas;
-        this.methods = methods;
-        this.usoVariaveisPrimitivas = usoVariaveisPrimitivas;
-        this.dependencias = dependencias;
-        this.linhasDeComentarios = linhasDeComentarios;
-    }
 
     public void run() throws Exception{
         int i = 1;
 
         while(!checkClassName(linhas[i++]));
 
+        // Nota: estas 2 regexs têm, obrigatoriamente, de ser definidas aqui, pois só após o ciclo while(...) anterior é que a variável className está definida
+        clonePadrao = "public[\\ \\t]+" + className + "[\\ \\t]+clone[\\ \\t]*\\([\\ \\t]*" + className + "[\\ \\t]+.*[\\ \\t]*\\)[\\ \\t]*"; // definido depois de encontrada a classname
+        equalsPadrao = "public[\\ \\t]+boolean[\\ \\t]+equals[\\ \\t]*\\([\\ \\t]*" + className + "[\\ \\t]+.*[\\ \\t]*\\)[\\ \\t]*"; // definido depois de encontrada a classname
 
         for (; i <= linhas.length; linhaAtual = ++i) {
             String linha = linhas[i - 1];
@@ -130,8 +104,8 @@ public class Ficheiro {
                 checkFinalVariables(linha);
                 checkTiposPrimitivos(linha);
                 checkComentariosSimples(linha); //  TODO tou a checkar os comentários fora dos métodos tb, não se era suposto, depois decide-se
+                checkToStringEqualsOrClone(linha);
                 if (insideMethod) {
-                    checkToStringEqualsOrClone(linha);
                     checkVariaveisUmCaracter(linha);
                     checkWhileTrue(linha);
                     checkFimMehtod(linha);
@@ -149,9 +123,12 @@ public class Ficheiro {
            //System.err.println("RUN : " + linhas[i-1]);
             //checkVariaveis();
         }
+
         //System.out.println(methods);
-        if (finalCounter > MAX_FINAL) {
-            CodeSmell cs = new CodeSmell(CodeSmellType.ManyFinals, -1);
+        if (finalLines.size() > MAX_FINAL) {
+            CodeSmell cs = new CodeSmell();
+            cs.codeSmell = CodeSmellType.ManyFinals;
+            cs.linhas = finalLines;
             this.codeSmells.add(cs);
         }
         if (linhas.length > MAX_LINES || methods.size() > MAX_METHODS) {
@@ -170,19 +147,19 @@ public class Ficheiro {
             CodeSmell cs = new CodeSmell(CodeSmellType.NoClone, -1);
             this.codeSmells.add(cs);
         }
+
         /*
-        System.out.println(fileName);
         System.err.println("toString=" + toString);
         System.err.println("equals=" + equals);
         System.err.println("clone=" + clone);
-        System.err.println("finalCounter=" + finalCounter);
         System.out.println(codeSmells);
         */
+
     }
 
     private void checkFinalVariables(String linha) {
         List<String> l = RegularExpression.findAll(linha, finalPadrao);
-        if (l.isEmpty() == false) finalCounter++;
+        if (l.isEmpty() == false) finalLines.add(linhaAtual);
     }
 
     public void checkToStringEqualsOrClone(String linha) {
@@ -380,6 +357,7 @@ public class Ficheiro {
             this.constutorParametrizado = true;
     }
 
+
     @Override
     public String toString() {
         return "Ficheiro{" +
@@ -407,7 +385,6 @@ public class Ficheiro {
                 ", chavetasAbrir=" + chavetasAbrir +
                 ", chavetasFechar=" + chavetasFechar +
                 ", nomeMetodo='" + nomeMetodo + '\'' +
-                ", finalCounter=" + finalCounter +
                 ", nomeMetodoPadrao='" + nomeMetodoPadrao + '\'' +
                 ", chavetasPadrao='" + chavetasPadrao + '\'' +
                 ", whileTruePadrao='" + whileTruePadrao + '\'' +
@@ -429,6 +406,7 @@ public class Ficheiro {
                 ", MAX_FINAL=" + MAX_FINAL +
                 ", MAX_LINES=" + MAX_LINES +
                 ", MAX_METHODS=" + MAX_METHODS +
+                ", finalLines=" + finalLines +
                 '}';
     }
 }

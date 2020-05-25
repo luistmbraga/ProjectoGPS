@@ -29,7 +29,7 @@ public class GProject {
             files[0] = f;
         }
         else { // caso seja uma diretoria
-            files = new File(dir).listFiles();
+            files = f.listFiles();
         }
         for(File file : files) {
             if(file.isFile()){
@@ -61,6 +61,10 @@ public class GProject {
         fw.write("<li><a href=\"" + filename + "VariaveisPrivadas.html\">Ausência de Variáveis Privadas</a></li>");
         fw.write("<li><a href=\"" + filename + "VariaveisUmCaracter.html\">Variáveis com um caracter</a></li>");
         fw.write("<li><a href=\"" + filename + "UsoHeranca.html\">Utilização de Herança</a></li>");
+
+        fw.write("<li><a href=\"" + filename + "LargeClass.html\">Classes possívelmente longas</a></li>");
+        fw.write("<li><a href=\"" + filename + "NoToStringNoEqualsOrNoClone.html\">toString(), equals() ou clone() não implementados</a></li>");
+        fw.write("<li><a href=\"" + filename + "FinalVariables.html\">Uso de variáveis \"final\"</a></li>");
 
         PrettyPrint.footerHTML(fw);
         fw.close();
@@ -98,7 +102,7 @@ public class GProject {
 
     public static void main(String[] args) throws Exception {
         System.err.println("A pasta output/ tem que ser criada!!!!");
-        String filename = "src/";
+        String filename = "src/Ficheiro.java";
         GProject gProject = new GProject();
         gProject.readFolder(filename);
         gProject.printFicheiros();
