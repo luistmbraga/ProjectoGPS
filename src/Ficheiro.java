@@ -22,8 +22,8 @@ public class Ficheiro {
     // a flag de analisar o método está a ser usada
     boolean insideMethod;
     boolean identifyPrimitives;
-    boolean insideComment = false;
-    boolean insideSimpleComment = false;
+    boolean insideMultiLineComment = false;
+    boolean insideSingularLineComment = false;
 
     //  chave: nome da variável
     Map<String, Integer> variaveisNaoPrivadas;
@@ -103,7 +103,7 @@ public class Ficheiro {
             String linha = linhas[i - 1];
             checkFimComentario(linha);  //  tem que se verificar antes do if
             checkComentariosSimples(linha);
-            if(!this.insideComment && !this.insideSimpleComment) { //  quando estamos dentro de comentários, não vale apena verificar nenhum code smell
+            if(!this.insideMultiLineComment && !this.insideSingularLineComment) { //  quando estamos dentro de comentários, não vale apena verificar nenhum code smell
                 checkFinalVariables(linha);
                 checkTiposPrimitivos(linha);
                 checkToStringEqualsOrClone(linha);
@@ -122,7 +122,7 @@ public class Ficheiro {
                     checkConstrutorParametrizado(linha);
                 }
             }
-            this.insideSimpleComment = false;
+            this.insideSingularLineComment = false;
            //System.err.println("RUN : " + linhas[i-1]);
             //checkVariaveis();
         }
@@ -319,7 +319,7 @@ public class Ficheiro {
     public void checkTiposPrimitivos(String line){
         List<Integer> res;
         String key;
-        for(String var : RegularExpression.findAll(line, this.variaveisComTiposPrimitivos)) {
+        for(String var : RegularExpression.findAll(line,     this.variaveisComTiposPrimitivos)) {
             String[] r = var.split(" ");    //  separar o tipo da variável
             key = r[r.length-1];
             res = this.usoVariaveisPrimitivas.get(key);
@@ -333,9 +333,9 @@ public class Ficheiro {
 
     public void checkComentariosSimples(String line){
         if(RegularExpression.findAll(line, this.simpleComments).size() > 0) {
-            this.insideSimpleComment = true;
+            this.insideSingularLineComment = true;
             this.linhasDeComentarios.add(linhaAtual);
-        }else this.insideSimpleComment = false; //  só para ter a certeza, mas isto é feito no método run()
+        }else this.insideSingularLineComment = false; //  só para ter a certeza, mas isto é feito no método run()
     }
 
     public void checkInicioComentario(String line){
@@ -348,7 +348,7 @@ public class Ficheiro {
          * */
 
         if(RegularExpression.findAll(line, initComment).size() > 0){
-            this.insideComment = true;
+            this.insideMultiLineComment = true;
             this.linhasDeComentarios.add(linhaAtual);
         }
     }
@@ -356,7 +356,7 @@ public class Ficheiro {
     public void checkFimComentario(String line){
         String endComment = "\\*\\/";
         if(RegularExpression.findAll(line, endComment).size() > 0){
-            this.insideComment = false;
+            this.insideMultiLineComment = false;
         }
     }
 
@@ -387,7 +387,7 @@ public class Ficheiro {
                 ", construtorCopia=" + construtorCopia +
                 ", insideMethod=" + insideMethod +
                 ", identifyPrimitives=" + identifyPrimitives +
-                ", insideComment=" + insideComment +
+                ", insideComment=" + insideMultiLineComment +
                 ", variaveisNaoPrivadas=" + variaveisNaoPrivadas +
                 ", methods=" + methods +
                 ", usoVariaveisPrimitivas=" + usoVariaveisPrimitivas +
