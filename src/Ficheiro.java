@@ -2,6 +2,8 @@ import java.util.*;
 
 public class Ficheiro {
 
+    //  int ola = 0;
+
     //  TODO pensar melhor como vamos guardar isto dos métodos
     //static Map<String, Integer > methods;    //  Ficheiro->tostring()
     String fileName;
@@ -21,6 +23,7 @@ public class Ficheiro {
     boolean insideMethod;
     boolean identifyPrimitives;
     boolean insideComment = false;
+    boolean insideSimpleComment = false;
 
     //  chave: nome da variável
     Map<String, Integer> variaveisNaoPrivadas;
@@ -99,10 +102,10 @@ public class Ficheiro {
         for (; i <= linhas.length; linhaAtual = ++i) {
             String linha = linhas[i - 1];
             checkFimComentario(linha);  //  tem que se verificar antes do if
-            if(!insideComment) { //  quando estamos dentro de comentários, não vale apena verificar nenhum code smell
+            checkComentariosSimples(linha);
+            if(!this.insideComment && !this.insideSimpleComment) { //  quando estamos dentro de comentários, não vale apena verificar nenhum code smell
                 checkFinalVariables(linha);
                 checkTiposPrimitivos(linha);
-                checkComentariosSimples(linha); //  TODO tou a checkar os comentários fora dos métodos tb, não se era suposto, depois decide-se
                 checkToStringEqualsOrClone(linha);
                 if (insideMethod) {
                     checkVariaveisUmCaracter(linha);
@@ -119,6 +122,7 @@ public class Ficheiro {
                     checkConstrutorParametrizado(linha);
                 }
             }
+            this.insideSimpleComment = false;
            //System.err.println("RUN : " + linhas[i-1]);
             //checkVariaveis();
         }
@@ -315,7 +319,6 @@ public class Ficheiro {
     public void checkTiposPrimitivos(String line){
         List<Integer> res;
         String key;
-        int numeroLinhas;
         for(String var : RegularExpression.findAll(line, this.variaveisComTiposPrimitivos)) {
             String[] r = var.split(" ");    //  separar o tipo da variável
             key = r[r.length-1];
@@ -329,8 +332,10 @@ public class Ficheiro {
     }
 
     public void checkComentariosSimples(String line){
-        if(RegularExpression.findAll(line, this.simpleComments).size() > 0)
+        if(RegularExpression.findAll(line, this.simpleComments).size() > 0) {
+            this.insideSimpleComment = true;
             this.linhasDeComentarios.add(linhaAtual);
+        }else this.insideSimpleComment = false; //  só para ter a certeza, mas isto é feito no método run()
     }
 
     public void checkInicioComentario(String line){
