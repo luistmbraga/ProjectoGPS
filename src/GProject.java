@@ -32,14 +32,16 @@ public class GProject {
             files = f.listFiles();
         }
         for(File file : files) {
-            if(file.isFile()){
+            if(file.isFile()){ // se for ficheiro
+                //System.out.println(file.getName());
                 Ficheiro ficheiro = new Ficheiro(file.getName());
                 ficheiro.linhas = readLines(file.getAbsolutePath());
                 ficheiro.numeroLinhas = ficheiro.linhas.length;
                 ficheiro.run();
                 //System.out.println(ficheiro.methods);
                 ficheiros.put(file.getName(), ficheiro);
-            }else{
+            }else{ // se for uma pasta
+                //System.err.println(dir);
                 readFolder(file.getAbsolutePath());
             }
         }

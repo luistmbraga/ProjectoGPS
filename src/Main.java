@@ -1,8 +1,9 @@
+import java.util.regex.Matcher;
 
-public class Main {
+public class Main extends GProject {
 
     public Main(){
-
+        super();
     }
 
     @Override

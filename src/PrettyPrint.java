@@ -216,7 +216,7 @@ public class PrettyPrint {
         FileWriter fw = new FileWriter(GProject.output +newFileName+"TiposPrimitivos.html");
         headerHTML(fw, "Tipos Primitivos no " + ficheiro.fileName);
         if(ficheiro.usoVariaveisPrimitivas.size() != 0)
-            fw.write(convertMapStringListIntegerToHTMLTable(ficheiro.usoVariaveisPrimitivas,"Nome da variável ou função","Linha"));
+            fw.write(convertMapStringListIntegerToHTMLTable(ficheiro.usoVariaveisPrimitivas,"Nome da variável ou função","Linhas"));
         else
             fw.write("Não foram encontrados problemas com esta norma!");
         footerHTML(fw);

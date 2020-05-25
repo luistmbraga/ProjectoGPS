@@ -55,8 +55,8 @@ public class Ficheiro {
     final String excecaoPadrao ="throws";
     final String inputOutputPadrao = "(ArrayList|List|HashMap|Set|Queue|Dequeue|Map|ListIterator|SortedSet|SortedMap|HashSet|TreeSet|LinkedList|TreeMap|PriorityQueue)";
     final int numeroMaximoLinhas = 10;
-    final String classNamePadrao1 = "\\s*(public|private)\\s+class\\s+(\\w+)\\s+((extends\\s+\\w+)|(implements\\s+\\w+( ,\\w+)*))?\\s*\\{";
-    final String classNamePadrao2 = "\\s*(public|private)\\s+class\\s+(\\w+)";
+    final String classNamePadrao1 = "\\s*(public|private)\\s+(class|interface)\\s+(\\w+)\\s+((extends\\s+\\w+)|(implements\\s+\\w+(\\s*,\\s*\\w+)*))?\\s*\\{";
+    final String classNamePadrao2 = "\\s*(public|private)\\s+(class|interface)\\s+(\\w+)";
     final String variaveisPrivadasPadrao = "private[A-Za-z0-9 <>,\\[\\]]+[=;]";
     final String variaveisUmCarater = "(final)?[A-Za-z\\[\\]<>, ]+ +[A-Za-z] *[;=]";
     final String simpleComments = "\\/\\/";
