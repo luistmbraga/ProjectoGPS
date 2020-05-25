@@ -66,7 +66,7 @@ public class Ficheiro {
     final String construtorParametrizadoRegex = "(public|protected|private|static)(\\ |\t)+[A-Za-z-0-9]+(\\ |\\t)*\\([\\ \\,\\<\\>A-Za-z-0-9]+\\)";
     final String toStringPadrao = "public[\\ \\t]+String[\\ \\t]+toString[\\ \\t]*\\([\\ \\t]*\\)[\\ \\t]*\\{";
     String clonePadrao;
-    String equalsPadrao;
+    String equalsPadrao = "public[\\ \\t]+boolean[\\ \\t]+equals[\\ \\t]*\\([\\ \\t]*Object[\\ \\t]+.*[\\ \\t]*\\)[\\ \\t]*"; // definido depois de encontrada a classname
     final String finalPadrao = "final[\\ \\t]+";
     final int MAX_FINAL = 5; // + que 5 variáveis final é code smell
     final int MAX_LINES = 200; // + que 200 linhas é considerada large class
@@ -94,8 +94,7 @@ public class Ficheiro {
         while(!checkClassName(linhas[i++]));
 
         // Nota: estas 2 regexs têm, obrigatoriamente, de ser definidas aqui, pois só após o ciclo while(...) anterior é que a variável className está definida
-        clonePadrao = "public[\\ \\t]+" + className + "[\\ \\t]+clone[\\ \\t]*\\([\\ \\t]*" + className + "[\\ \\t]+.*[\\ \\t]*\\)[\\ \\t]*"; // definido depois de encontrada a classname
-        equalsPadrao = "public[\\ \\t]+boolean[\\ \\t]+equals[\\ \\t]*\\([\\ \\t]*" + className + "[\\ \\t]+.*[\\ \\t]*\\)[\\ \\t]*"; // definido depois de encontrada a classname
+        clonePadrao = "public[\\ \\t]+" + className + "[\\ \\t]+clone[\\ \\t]*\\([\\ \\t]*\\)[\\ \\t]*"; // definido depois de encontrada a classname
 
         for (; i <= linhas.length; linhaAtual = ++i) {
             String linha = linhas[i - 1];

@@ -49,7 +49,7 @@ public class GProject {
     public void printListaCodeSmells(String filename)throws Exception{
         FileWriter fw = new FileWriter(GProject.output+filename+".html");
 
-        PrettyPrint.headerHTML(fw, "Normas encontradas no " + filename + ".java");
+        PrettyPrint.headerHTML(fw, "Possíveis code smells/ normas encontradas no " + filename + ".java");
 
         //  TODO aqui coloquem o link para o vosso ficheiro, lembrem-se o vosso ficheiro tem que ser "nomeDoFicheiroAnalisado + CodeSmell + html, p.e GProjectLongMethod.html
         fw.write("<li><a href=\"" + filename + "LongMethod.html\">Long Method</a></li>");
@@ -61,10 +61,9 @@ public class GProject {
         fw.write("<li><a href=\"" + filename + "VariaveisPrivadas.html\">Ausência de Variáveis Privadas</a></li>");
         fw.write("<li><a href=\"" + filename + "VariaveisUmCaracter.html\">Variáveis com um caracter</a></li>");
         fw.write("<li><a href=\"" + filename + "UsoHeranca.html\">Utilização de Herança</a></li>");
-
-        fw.write("<li><a href=\"" + filename + "LargeClass.html\">Classes possívelmente longas</a></li>");
-        fw.write("<li><a href=\"" + filename + "NoToStringNoEqualsOrNoClone.html\">toString(), equals() ou clone() não implementados</a></li>");
-        fw.write("<li><a href=\"" + filename + "FinalVariables.html\">Uso de variáveis \"final\"</a></li>");
+        fw.write("<li><a href=\"" + filename + "LargeClass.html\">Classe possivelmente longa</a></li>");
+        fw.write("<li><a href=\"" + filename + "NoToStringNoEqualsOrNoClone.html\">métodos - toString(), equals() ou clone() - não implementados</a></li>");
+        fw.write("<li><a href=\"" + filename + "ManyFinalVariables.html\">Uso excessivo de variáveis \"final\"</a></li>");
 
         PrettyPrint.footerHTML(fw);
         fw.close();
@@ -81,13 +80,14 @@ public class GProject {
 
         FileWriter fw = new FileWriter(GProject.output+"index.html");
         PrettyPrint.headerHTML(fw, "Ficheiros analisados: ");
+
         for (Map.Entry<String,Ficheiro> entry : ficheiros.entrySet()) {
-            String newFileName = entry.getKey().split("\\.")[0];
+            String newFileName = entry.getKey().split("\\.")[0]; // devolve o nome do ficheiro sem .java
             fw.write("<li><a href=\"" + newFileName + ".html\">" + entry.getKey() + "</a></li>");
 
             printListaCodeSmells(newFileName);  //  índice de cada ficheiro
 
-            //  a seguir vamso gerar os respetivos ficheiros de cada codeSmell
+            // a seguir vamos gerar os respetivos ficheiros de cada codeSmell
 
             Ficheiro ficheiro = entry.getValue();
 
@@ -100,7 +100,12 @@ public class GProject {
             PrettyPrint.variaveisPrivadas(ficheiro);
             PrettyPrint.variaveisComUmCaracter(ficheiro);
             PrettyPrint.usoDeHeranca(ficheiro);
+            PrettyPrint.largeClass(ficheiro);
+            PrettyPrint.noToStringNoEqualsOrNoClone(ficheiro);
+            PrettyPrint.manyFinalVariables(ficheiro);
+
         }
+
         PrettyPrint.footerHTML(fw);
         fw.close();
 
@@ -109,7 +114,7 @@ public class GProject {
 
 
     public static void main(String[] args) throws Exception {
-        String filename = "src/Ficheiro.java";
+        String filename = "src/";
         GProject gProject = new GProject();
         gProject.readFolder(filename);
         gProject.printFicheiros();

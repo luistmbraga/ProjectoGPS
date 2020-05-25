@@ -138,16 +138,18 @@ public class PrettyPrint {
         return result;
     }
 
-    public static boolean existeCodeSmellFicheiro(List<CodeSmell> codeSmells, CodeSmellType codesmell){
-        boolean existe = false;
+    /* NOTA para quem estava a usar este método:
 
+        antes o método retornava true ou false, no entanto dava-me jeito que retorna-se o CodeSmell em especifico.
+        não se preocupem, alterei o vosso código para verificar se é != null, por isso ficou com o mesmo efeito!
+
+        by: Ricardo Petronilho
+    */
+    public static CodeSmell existeCodeSmellFicheiro(List<CodeSmell> codeSmells, CodeSmellType codesmell){
         for (CodeSmell smell: codeSmells)
-            if(smell.codeSmell.equals(codesmell)){
-                existe = true;
-                break;
-            }
-
-        return existe;
+            if(smell.codeSmell.equals(codesmell))
+                return smell;
+        return null;
     }
 
     //  MÉTODOS GENÉRICOS #############################################################################################
@@ -272,7 +274,7 @@ public class PrettyPrint {
 
         fw.write("<ul>");
 
-        if (existeCodeSmellFicheiro(ficheiro.codeSmells, CodeSmellType.VariaveisPrivadas))
+        if (existeCodeSmellFicheiro(ficheiro.codeSmells, CodeSmellType.VariaveisPrivadas) != null)
             fw.write("<li><p style=\"color: red\";>Variáveis desta classe encontram-se privadas e protegidas. " +
                     "No entanto, verifique se todas são privadas.</p></li>");
         else
@@ -309,13 +311,78 @@ public class PrettyPrint {
         FileWriter fw = new FileWriter(GProject.output +newFileName+"UsoHeranca.html");
         headerHTML(fw, "Uso de herança no " + ficheiro.fileName);
 
-        if (existeCodeSmellFicheiro(ficheiro.codeSmells, CodeSmellType.UsoHeranca)){
+        if (existeCodeSmellFicheiro(ficheiro.codeSmells, CodeSmellType.UsoHeranca) != null){
             fw.write("<ul>");
             fw.write("<li><p style=\"color: red\";>Neste ficheiro é utilizada herança. Atenção !</p></li>");
             fw.write("</ul>");
         }
         else
             fw.write("Não foram encontrados problemas com esta norma!");
+
+        footerHTML(fw);
+        fw.close();
+    }
+
+    public static void largeClass(Ficheiro ficheiro) throws IOException {
+        String newFileName = ficheiro.fileName.split("\\.")[0];
+        FileWriter fw = new FileWriter(GProject.output +newFileName+"LargeClass.html");
+        headerHTML(fw, "Classe longa no " + ficheiro.fileName);
+
+        if (existeCodeSmellFicheiro(ficheiro.codeSmells, CodeSmellType.LargeClass) != null){
+            fw.write("<ul>");
+            fw.write("<li><p>A classe definida neste ficheiro é <b style=\"color: red\";>demasiado longa!</b></p></li>");
+            if (ficheiro.linhas.length > ficheiro.MAX_LINES) fw.write("<li><p>A classe tem <b style=\"color: red\";>" + ficheiro.linhas.length + "</b> linhas, sendo que o limite recomandado são <b style=\"color: red\";>" + ficheiro.MAX_LINES + "</b> linhas. </p></li>");
+            if (ficheiro.methods.size() > ficheiro.MAX_METHODS) fw.write("<li><p>A classe tem <b style=\"color: red\";>" + ficheiro.methods.size() + "</b> métodos, sendo que o limite recomandado são <b style=\"color: red\";>" + ficheiro.MAX_METHODS + "</b> métodos. </p></li>");
+            fw.write("</ul>");
+        }
+        else fw.write("Não foram encontrados problemas com esta norma!");
+
+        footerHTML(fw);
+        fw.close();
+    }
+
+    public static void noToStringNoEqualsOrNoClone(Ficheiro ficheiro) throws IOException {
+        String newFileName = ficheiro.fileName.split("\\.")[0];
+        FileWriter fw = new FileWriter(GProject.output +newFileName+"NoToStringNoEqualsOrNoClone.html");
+        headerHTML(fw, "Inexistência dos métodos toString(), equals() ou clone() no " + ficheiro.fileName);
+
+        fw.write("<ul>");
+        boolean codeSmellExists = false;
+
+        if (existeCodeSmellFicheiro(ficheiro.codeSmells, CodeSmellType.NoToString) != null) {
+            fw.write("<li><p>O método - <b>String toString()</b> - <b style=\"color: red\";>não está definido!</b></p></li>");
+            codeSmellExists = true;
+        }
+        else fw.write("<li><p>O método - <b>String toString()</b> - <b style=\"color: green\";>está definido!</b></p></li>");
+
+        if (existeCodeSmellFicheiro(ficheiro.codeSmells, CodeSmellType.NoEquals) != null) {
+            fw.write("<li><p>O método - <b>public boolean equals(Object " + ficheiro.className.toLowerCase() + ")</b> - <b style=\"color: red\";>não está definido!</b></p></li>");
+            codeSmellExists = true;
+        }
+        else fw.write("<li><p>O método - <b>public boolean equals(Object " + ficheiro.className.toLowerCase() + ")</b> - <b style=\"color: green\";>está definido!</b></p></li>");
+
+        if (existeCodeSmellFicheiro(ficheiro.codeSmells, CodeSmellType.NoClone) != null) {
+            fw.write("<li><p>O método - <b>public " + ficheiro.className + " clone()</b> - <b style=\"color: red\";>não está definido!</b></p></li>");
+            codeSmellExists = true;
+        }
+        else fw.write("<li><p>O método - <b>public " + ficheiro.className + " clone()</b> - <b style=\"color: green\";>está definido!</b></p></li>");
+
+
+        if (codeSmellExists == false) fw.write("<li>Não foram encontrados problemas com esta norma!</li>");
+
+        fw.write("</ul>");
+        footerHTML(fw);
+        fw.close();
+    }
+
+    public static void manyFinalVariables(Ficheiro ficheiro) throws IOException {
+        String newFileName = ficheiro.fileName.split("\\.")[0];
+        FileWriter fw = new FileWriter(GProject.output +newFileName+"ManyFinalVariables.html");
+        headerHTML(fw, "Uso excessivo de variáveis \"final\" no " + ficheiro.fileName);
+
+        CodeSmell codeSmell;
+        if ( (codeSmell = existeCodeSmellFicheiro(ficheiro.codeSmells, CodeSmellType.ManyFinals)) != null) fw.write(convertListIntegerToHTMLTable(codeSmell.linhas, "linhas"));
+        else fw.write("Não foram encontrados problemas com esta norma!");
 
         footerHTML(fw);
         fw.close();
