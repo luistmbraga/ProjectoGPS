@@ -28,7 +28,7 @@ public class Ficheiro {
     //  chave: Nome do método - temos a info do número de linhas, e code smells
     Map<String, Method> methods;
 
-    Map<String, Integer> usoVariaveisPrimitivas;
+    Map<String, List<Integer>> usoVariaveisPrimitivas;
 
     List<String> dependencias;  //  dependências de classes;
 
@@ -60,7 +60,7 @@ public class Ficheiro {
     final String variaveisPrivadasPadrao = "private[A-Za-z0-9 <>,\\[\\]]+[=;]";
     final String variaveisUmCarater = "(final)?[A-Za-z\\[\\]<>, ]+ +[A-Za-z] *[;=]";
     final String simpleComments = "\\/\\/";
-    final String variaveisComTiposPrimitivos = "(byte|short|int|long|float|double|char|boolean){1}[\\[\\]]*(\\ |\\t)+[?:A-Za-z0-9]+";
+    final String variaveisComTiposPrimitivos = "(byte|short|int|long|float|double|char|boolean){1}[\\[\\]]*(\\ |\\t)+[?:A-Za-z0-9\\_]+";
     //final String construtorVazioRegex = "(public|protected|private|static)(\\ |\t)+[A-Za-z-0-9]+(\\ |\\t)*\\((\\ |\\t)*\\)";
     final String construtorVazioRegex = "(public|protected|private|static)(\\ |\t)+[A-Za-z-0-9]+(\\ |\\t)*\\(\\)";
     final String construtorParametrizadoRegex = "(public|protected|private|static)(\\ |\t)+[A-Za-z-0-9]+(\\ |\\t)*\\([\\ \\,\\<\\>A-Za-z-0-9]+\\)";
@@ -314,9 +314,18 @@ public class Ficheiro {
      * @param line linha a ser processada
      */
     public void checkTiposPrimitivos(String line){
+        List<Integer> res;
+        String key;
+        int numeroLinhas;
         for(String var : RegularExpression.findAll(line, this.variaveisComTiposPrimitivos)) {
             String[] r = var.split(" ");    //  separar o tipo da variável
-            this.usoVariaveisPrimitivas.put(r[r.length-1], linhaAtual); //  r.length-1, pois pode ter mais do que um espaço
+            key = r[r.length-1];
+            res = this.usoVariaveisPrimitivas.get(key);
+
+            if(res == null) res = new ArrayList<>();    //  verificar se já existem linhas
+
+            res.add(linhaAtual);
+            this.usoVariaveisPrimitivas.put(key, res); //  r.length-1, pois pode ter mais do que um espaço
         }
     }
 
