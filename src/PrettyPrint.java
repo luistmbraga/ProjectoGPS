@@ -34,6 +34,22 @@ public class PrettyPrint {
         return result;
     }
 
+    private static String convertMapStringListIntegerToHTMLTable(Map<String, List<Integer>> data, String column1, String column2){
+        String result = "<table>" +
+                "  <tr>" +
+                "    <th>" + column1 + "</th>" +
+                "    <th>" + column2 + "</th>" +
+                "  </tr>";
+        for (Map.Entry<String,List<Integer>> entry : data.entrySet()) {
+            result += "  <tr>" +
+                    "    <td>" + entry.getKey() + "</td>" +
+                    "    <td>" + entry.getValue() + "</td>" +
+                    "  </tr>";
+        }
+        result += "</table>";
+        return result;
+    }
+
     private static String convertListIntegerToHTMLTable(List<Integer> data, String column1){
         String result = "<table>" +
                 "  <tr>" +
@@ -192,12 +208,13 @@ public class PrettyPrint {
 
     //  TIPOS PRIMITIVOS ---------------------------------------------------------------------------
 
+
     public static void tiposPrimitivos(Ficheiro ficheiro) throws IOException {
         String newFileName = ficheiro.fileName.split("\\.")[0];
         FileWriter fw = new FileWriter(GProject.output +newFileName+"TiposPrimitivos.html");
         headerHTML(fw, "Tipos Primitivos no " + ficheiro.fileName);
         if(ficheiro.usoVariaveisPrimitivas.size() != 0)
-            fw.write(convertMapStringIntegerToHTMLTable(ficheiro.usoVariaveisPrimitivas,"Nome da variável ou função","Linha"));
+            fw.write(convertMapStringListIntegerToHTMLTable(ficheiro.usoVariaveisPrimitivas,"Nome da variável ou função","Linha"));
         else
             fw.write("Não foram encontrados problemas com esta norma!");
         footerHTML(fw);
