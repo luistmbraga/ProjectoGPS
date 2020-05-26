@@ -390,6 +390,24 @@ public class PrettyPrint {
 
     //  USO DE HERANCA ---------------------------------------------------------------------------
 
+    public static void className(Ficheiro ficheiro) throws IOException{
+        String newFileName = ficheiro.fileName.split("\\.")[0];
+        FileWriter fw = new FileWriter(GProject.output + newFileName + "ClassName.html");
+        headerHTML(fw, "Nome da classe mal construído em " + ficheiro.fileName);
+
+        CodeSmell codeSmell;
+        boolean t1 = ((codeSmell = existeCodeSmellFicheiro(ficheiro.codeSmells, CodeSmellType.NomeFicheiroErrado)) != null);
+        boolean t2 = ((codeSmell = existeCodeSmellFicheiro(ficheiro.codeSmells, CodeSmellType.NomeClasseLetraMinuscula)) != null);
+        if(!t1 && !t2) {fw.write("O nome da classe não tem problemas relativos a esta norma."); footerHTML(fw); fw.close(); return;}
+
+        fw.write("<ul>");
+        if (t1) fw.write("<li> O nome do ficheiro tem que ser igual ao nome da classe! </li>");
+
+        if (t2) fw.write("<li> O nome da classe deve começar por uma letra maíuscula! </li>");
+        fw.write("</ul>");
+        footerHTML(fw);
+        fw.close();
+    }
 
     //  TODO verifiquem os métodos genéricos acima, já foram definidos métodos que fazem tables HTML a partir de Maps e Lists
 }

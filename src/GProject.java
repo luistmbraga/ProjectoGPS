@@ -66,6 +66,7 @@ public class GProject {
         fw.write("<li><a href=\"" + filename + "LargeClass.html\">Classe possivelmente longa</a></li>");
         fw.write("<li><a href=\"" + filename + "NoToStringNoEqualsOrNoClone.html\">métodos - toString(), equals() ou clone() - não implementados</a></li>");
         fw.write("<li><a href=\"" + filename + "ManyFinalVariables.html\">Uso excessivo de variáveis \"final\"</a></li>");
+        fw.write("<li><a href=\"" + filename + "ClassName.html\"> Nome da Classe mal definido </a> </li>");
 
         PrettyPrint.footerHTML(fw);
         fw.close();
@@ -105,6 +106,7 @@ public class GProject {
             PrettyPrint.largeClass(ficheiro);
             PrettyPrint.noToStringNoEqualsOrNoClone(ficheiro);
             PrettyPrint.manyFinalVariables(ficheiro);
+            PrettyPrint.className(ficheiro);
 
         }
 
