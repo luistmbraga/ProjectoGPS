@@ -180,7 +180,7 @@ public class PrettyPrint {
         String newFileName = ficheiro.fileName.split("\\.")[0];
         FileWriter fw = new FileWriter(GProject.output +newFileName+"Excessao.html");
 
-        headerHTML(fw, "Método sem Excessão no " + ficheiro.fileName);
+        headerHTML(fw, "Método sem Exceção no " + ficheiro.fileName);
 
         fw.write(printTableLongMethod(ficheiro.methods,"Método","Linhas",CodeSmellType.Excessao));
 
