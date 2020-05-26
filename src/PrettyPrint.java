@@ -230,7 +230,7 @@ public class PrettyPrint {
     public static void comentarios(Ficheiro ficheiro) throws IOException {
         String newFileName = ficheiro.fileName.split("\\.")[0];
         FileWriter fw = new FileWriter(GProject.output +newFileName+"Comentarios.html");
-        headerHTML(fw, "Comentários no interior de métodos no " + ficheiro.fileName);
+        headerHTML(fw, "Comentários presentes no " + ficheiro.fileName);
         if(ficheiro.linhasDeComentarios.size() != 0)
             fw.write(convertListIntegerToHTMLTable(ficheiro.linhasDeComentarios,"Linha"));
         else
