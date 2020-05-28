@@ -52,14 +52,14 @@ public class Ficheiro {
     // nome do método atual
     String nomeMetodo;
 
+    final String classNamePadrao = "(class|interface)\\s+.*\\s*\\{";
+
     final String nomeMetodoPadrao = "(public|protected|private|static)(\\ |\\t)+(?!class)[A-Za-z<>]+(\\ |\\t)+[A-Za-z]+(\\ |\\t)*(\\ |\\(.*\\{)";
     final String chavetasPadrao = "[\\{\\}]";
     final String whileTruePadrao = "while\\(true\\)\\{";
     final String excecaoPadrao ="throws";
     final String inputOutputPadrao = "(ArrayList|List|HashMap|Set|Queue|Dequeue|Map|ListIterator|SortedSet|SortedMap|HashSet|TreeSet|LinkedList|TreeMap|PriorityQueue)";
     final int numeroMaximoLinhas = 10;
-    final String classNamePadrao1 = "\\s*(public|private)\\s+(class|interface)\\s+(\\w+)\\s+((extends\\s+\\w+)|(implements\\s+\\w+(\\s*,\\s*\\w+)*))?\\s*\\{";
-    final String classNamePadrao2 = "\\s*(public|private)\\s+(class|interface)\\s+(\\w+)";
     final String variaveisPrivadasPadrao = "private[A-Za-z0-9 <>,\\[\\]]+[=;]";
     final String variaveisUmCarater = "(final)?[A-Za-z\\[\\]<>, ]+ +[A-Za-z] *[;=]";
     final String simpleComments = "\\/\\/";
@@ -94,11 +94,16 @@ public class Ficheiro {
     public void run() throws Exception{
         int i = 1;
 
-        // Nota: estas 2 regexs têm, obrigatoriamente, de ser definidas aqui, pois só após o ciclo while(...) anterior é que a variável className está definida
-        clonePadrao = "public[\\ \\t]+" + className + "[\\ \\t]+clone[\\ \\t]*\\([\\ \\t]*\\)[\\ \\t]*"; // definido depois de encontrada a classname
-
         for (; i <= linhas.length; linhaAtual = ++i) {
+
             String linha = linhas[i - 1];
+
+            if (className == null) {
+                checkClassName(linha);
+                // Nota: esta regexs tem, obrigatoriamente, de ser definida aqui, pois aepnas aqui é que a variável className está definida
+                clonePadrao = "public[\\ \\t]+" + className + "[\\ \\t]+clone[\\ \\t]*\\([\\ \\t]*\\)[\\ \\t]*"; // definido depois de encontrada a classname
+            }
+
             checkFimComentario(linha);  //  tem que se verificar antes do if
             checkComentariosSimples(linha);
             if(!this.insideMultiLineComment && !this.insideSingularLineComment) { //  quando estamos dentro de comentários, não vale apena verificar nenhum code smell
@@ -275,39 +280,41 @@ public class Ficheiro {
         }
     }
 
-    public boolean checkClassName(String line){
-        List<String> l = RegularExpression.findAll(line, classNamePadrao1);
+    public void checkClassName(String line){
 
-        if(l.size() != 0){
+        // procura pelo pattern que tenha a classe
+        List<String> l = RegularExpression.findAll(line, classNamePadrao);
+
+        if (l.isEmpty() == false) {
             String c = l.get(0);
+
+            // code smell: uso de herança
             if (c.contains("extends")) {
                 CodeSmell cs = new CodeSmell(CodeSmellType.UsoHeranca, linhaAtual);
                 this.codeSmells.add(cs);
             }
-            if (c.contains("implements")) { /*System.out.println("Classe que implementa interfaces");*/ }
 
-            List<String> lAux = RegularExpression.findAll(c, classNamePadrao2);
-            String auxName = lAux.get(0).replace(" ", "");
-            if(auxName.contains("private")) className = auxName.substring(12);
-            else className = auxName.substring(11);
+            // detetar o nome da classe
+            l = RegularExpression.findAll(line, "\\s{1}\\w+");
+            if (l.isEmpty() == false) {
 
-            //System.out.println("FILE NAME : " + fileName);
-            //System.out.println("CLASS NAME : " + className);
+                className = l.get(1).substring(1); // remove o espaço que o padrão apanha
 
-            if(!className.equals(fileName.substring(0, fileName.length() - 5))){
-                CodeSmell codeSmell = new CodeSmell();
-                codeSmell.codeSmell = CodeSmellType.NomeFicheiroErrado;
-                codeSmell.linhas.add(linhaAtual);
+                // code smell: nome do ficheiro != nome da classe
+                if(!className.equals(fileName.substring(0, fileName.length() - 5))){
+                    CodeSmell codeSmell = new CodeSmell();
+                    codeSmell.codeSmell = CodeSmellType.NomeFicheiroErrado;
+                    codeSmell.linhas.add(linhaAtual);
+                }
+
+                // code smell: nome da classe não começa por letra maiúscula
+                if(Character.isUpperCase(className.charAt(0))){
+                    CodeSmell codeSmell = new CodeSmell();
+                    codeSmell.codeSmell = CodeSmellType.NomeClasseLetraMinuscula;
+                    codeSmell.linhas.add(linhaAtual);
+                }
             }
-            if(Character.isUpperCase(className.charAt(0))){
-                CodeSmell codeSmell = new CodeSmell();
-                codeSmell.codeSmell = CodeSmellType.NomeClasseLetraMinuscula;
-                codeSmell.linhas.add(linhaAtual);
-            }
-
-            return true;
         }
-        return false;
     }
 
     /**
@@ -402,8 +409,6 @@ public class Ficheiro {
                 ", excecaoPadrao='" + excecaoPadrao + '\'' +
                 ", inputOutputPadrao='" + inputOutputPadrao + '\'' +
                 ", numeroMaximoLinhas=" + numeroMaximoLinhas +
-                ", classNamePadrao1='" + classNamePadrao1 + '\'' +
-                ", classNamePadrao2='" + classNamePadrao2 + '\'' +
                 ", variaveisPrivadasPadrao='" + variaveisPrivadasPadrao + '\'' +
                 ", variaveisUmCarater='" + variaveisUmCarater + '\'' +
                 ", simpleComments='" + simpleComments + '\'' +

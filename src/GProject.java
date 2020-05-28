@@ -121,9 +121,10 @@ public class GProject {
 
 
     public static void main(String[] args) throws Exception {
-        System.out.println("Insira a diretoria/ficheiro:");
-        Scanner input = new Scanner(System.in);
-        String filename = input.nextLine();
+        //System.out.println("Insira a diretoria/ficheiro:");
+        //Scanner input = new Scanner(System.in);
+        //String filename = input.nextLine();
+        String filename = "Projeto_POO-master";
         GProject gProject = new GProject();
         gProject.readFolder(filename);
         gProject.printFicheiros();
