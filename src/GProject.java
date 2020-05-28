@@ -69,7 +69,7 @@ public class GProject {
         fw.write("<li><a href=\"" + filename + "LargeClass.html\">Classe possivelmente longa</a></li>");
         fw.write("<li><a href=\"" + filename + "NoToStringNoEqualsOrNoClone.html\">métodos - toString(), equals() ou clone() - não implementados</a></li>");
         fw.write("<li><a href=\"" + filename + "ManyFinalVariables.html\">Uso excessivo de variáveis \"final\"</a></li>");
-        //fw.write("<li><a href=\"" + filename + "ClassName.html\"> Nome da Classe mal definido </a> </li>");
+        fw.write("<li><a href=\"" + filename + "ClassName.html\"> Nome da Classe mal definido </a> </li>");
 
         PrettyPrint.footerHTML(fw);
         fw.close();
@@ -109,8 +109,7 @@ public class GProject {
             PrettyPrint.largeClass(ficheiro);
             PrettyPrint.noToStringNoEqualsOrNoClone(ficheiro);
             PrettyPrint.manyFinalVariables(ficheiro);
-            //PrettyPrint.className(ficheiro);
-
+            PrettyPrint.className(ficheiro);
         }
 
         PrettyPrint.footerHTML(fw);
@@ -121,10 +120,9 @@ public class GProject {
 
 
     public static void main(String[] args) throws Exception {
-        //System.out.println("Insira a diretoria/ficheiro:");
-        //Scanner input = new Scanner(System.in);
-        //String filename = input.nextLine();
-        String filename = "Projeto_POO-master";
+        System.out.println("Insira a diretoria/ficheiro:");
+        Scanner input = new Scanner(System.in);
+        String filename = input.nextLine();
         GProject gProject = new GProject();
         gProject.readFolder(filename);
         gProject.printFicheiros();
