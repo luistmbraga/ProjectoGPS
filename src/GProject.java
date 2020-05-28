@@ -3,6 +3,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public class GProject {
 
@@ -33,13 +34,15 @@ public class GProject {
         }
         for(File file : files) {
             if(file.isFile()){ // se for ficheiro
-                //System.out.println(file.getName());
-                Ficheiro ficheiro = new Ficheiro(file.getName());
-                ficheiro.linhas = readLines(file.getAbsolutePath());
-                ficheiro.numeroLinhas = ficheiro.linhas.length;
-                ficheiro.run();
-                //System.out.println(ficheiro.methods);
-                ficheiros.put(file.getName(), ficheiro);
+                if(file.getName().contains(".java")) {
+                    //System.err.println(file.getName());
+                    Ficheiro ficheiro = new Ficheiro(file.getName());
+                    ficheiro.linhas = readLines(file.getAbsolutePath());
+                    ficheiro.numeroLinhas = ficheiro.linhas.length;
+                    ficheiro.run();
+                    //System.out.println(ficheiro.methods);
+                    ficheiros.put(file.getName(), ficheiro);
+                }
             }else{ // se for uma pasta
                 //System.err.println(dir);
                 readFolder(file.getAbsolutePath());
@@ -56,7 +59,7 @@ public class GProject {
         //  TODO aqui coloquem o link para o vosso ficheiro, lembrem-se o vosso ficheiro tem que ser "nomeDoFicheiroAnalisado + CodeSmell + html, p.e GProjectLongMethod.html
         fw.write("<li><a href=\"" + filename + "LongMethod.html\">Long Method</a></li>");
         fw.write("<li><a href=\"" + filename + "TiposPrimitivos.html\">Tipos Primitivos</a></li>");
-        fw.write("<li><a href=\"" + filename + "Comentarios.html\">Comentários no interior de métodos</a></li>");
+        fw.write("<li><a href=\"" + filename + "Comentarios.html\">Comentários perdidos</a></li>");
         fw.write("<li><a href=\"" + filename + "Construtores.html\">Ausência de Construtores</a></li>");
         fw.write("<li><a href=\"" + filename + "Excessao.html\">Métodos sem Exceção</a></li>");
         fw.write("<li><a href=\"" + filename + "InputOutput.html\">Métodos sem Input/Output Genérico</a></li>");
@@ -66,7 +69,7 @@ public class GProject {
         fw.write("<li><a href=\"" + filename + "LargeClass.html\">Classe possivelmente longa</a></li>");
         fw.write("<li><a href=\"" + filename + "NoToStringNoEqualsOrNoClone.html\">métodos - toString(), equals() ou clone() - não implementados</a></li>");
         fw.write("<li><a href=\"" + filename + "ManyFinalVariables.html\">Uso excessivo de variáveis \"final\"</a></li>");
-        fw.write("<li><a href=\"" + filename + "ClassName.html\"> Nome da Classe mal definido </a> </li>");
+        //fw.write("<li><a href=\"" + filename + "ClassName.html\"> Nome da Classe mal definido </a> </li>");
 
         PrettyPrint.footerHTML(fw);
         fw.close();
@@ -106,7 +109,7 @@ public class GProject {
             PrettyPrint.largeClass(ficheiro);
             PrettyPrint.noToStringNoEqualsOrNoClone(ficheiro);
             PrettyPrint.manyFinalVariables(ficheiro);
-            PrettyPrint.className(ficheiro);
+            //PrettyPrint.className(ficheiro);
 
         }
 
@@ -118,7 +121,9 @@ public class GProject {
 
 
     public static void main(String[] args) throws Exception {
-        String filename = "src/";
+        System.out.println("Insira a diretoria/ficheiro:");
+        Scanner input = new Scanner(System.in);
+        String filename = input.nextLine();
         GProject gProject = new GProject();
         gProject.readFolder(filename);
         gProject.printFicheiros();

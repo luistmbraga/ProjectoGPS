@@ -94,8 +94,6 @@ public class Ficheiro {
     public void run() throws Exception{
         int i = 1;
 
-        while(!checkClassName(linhas[i++]));
-
         // Nota: estas 2 regexs têm, obrigatoriamente, de ser definidas aqui, pois só após o ciclo while(...) anterior é que a variável className está definida
         clonePadrao = "public[\\ \\t]+" + className + "[\\ \\t]+clone[\\ \\t]*\\([\\ \\t]*\\)[\\ \\t]*"; // definido depois de encontrada a classname
 

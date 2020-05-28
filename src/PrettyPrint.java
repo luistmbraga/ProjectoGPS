@@ -356,10 +356,10 @@ public class PrettyPrint {
         else fw.write("<li><p>O método - <b>String toString()</b> - <b style=\"color: green\";>está definido!</b></p></li>");
 
         if (existeCodeSmellFicheiro(ficheiro.codeSmells, CodeSmellType.NoEquals) != null) {
-            fw.write("<li><p>O método - <b>public boolean equals(Object " + ficheiro.className.toLowerCase() + ")</b> - <b style=\"color: red\";>não está definido!</b></p></li>");
+            fw.write("<li><p>O método - <b>public boolean equals(Object obj)</b> - <b style=\"color: red\";>não está definido!</b></p></li>");
             codeSmellExists = true;
         }
-        else fw.write("<li><p>O método - <b>public boolean equals(Object " + ficheiro.className.toLowerCase() + ")</b> - <b style=\"color: green\";>está definido!</b></p></li>");
+        else fw.write("<li><p>O método - <b>public boolean equals(Object obj)</b> - <b style=\"color: green\";>está definido!</b></p></li>");
 
         if (existeCodeSmellFicheiro(ficheiro.codeSmells, CodeSmellType.NoClone) != null) {
             fw.write("<li><p>O método - <b>public " + ficheiro.className + " clone()</b> - <b style=\"color: red\";>não está definido!</b></p></li>");
