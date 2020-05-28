@@ -4,7 +4,7 @@ import java.util.*;
 
 public class PrettyPrint {
 
-    public static String importCss = "<head><link rel=\"stylesheet\" href=\"..\\styleSheets\\style.css\"></head>";
+    public static String importCss = "<head><link rel=\"stylesheet\" href=\"style.css\"></head>";
 
     //  MÉTODOS GENÉRICOS #############################################################################################
     //  ###############################################################################################################

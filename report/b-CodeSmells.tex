@@ -1,0 +1,78 @@
+\chapter{Normas de Codificação}
+
+\hspace{5mm} Ao longo deste capítulo descrevem-se os \textit{code smells} e outras boas práticas de programação que o grupo de trabalho considerou relevantes e seleccionou para a implementação.
+
+\section{Code Smells}
+
+\hspace{5mm} \textit{Code Smells} são características e particularidades encontradas no código de um determinado programa. Estas características podem ser indicadores ou sinais de que a implementação de um programa já possui ou poderá vir a apresentar problemas. Estes problemas encontram-se muitas vezes camuflados e não comprometem o correcto funcionamento do programa. Contudo, põem em risco o ciclo de vida do programa, pois, complicam, por vezes ao ponto de ter de se recomeçar do início o desenvolvimento, a evolução do programa, a sua manutenibilidade e a capacidade de outros perceberem o que foi feito.
+
+\subsection{Bloaters}
+\hspace{5mm} \textit{Bloaters} como o nome indica são porções de código, métodos ou classes que possuem proporções excessivas e que, consequentemente, se tornaram quase impossíveis de modificar, utilizar ou perceber.
+
+\subsubsection{Long Method}
+\hspace{5mm} Um \textit{smell} do tipo \textit{bloater} que foi seleccionado para desenvolver foi o \textit{long method}. Este "mau cheiro" traduz-se num método que contém demasiadas linhas de código. Este simples facto pode ser indicador que este mecanismo poderá ter sobre si demasiada responsabilidade, o que compromete a sua reutilização e a capacidade de se alterar no futuro.
+
+
+\subsubsection{Large Class}
+\hspace{5mm} De forma semelhante ao \textit{long method} a \textit{large class} é um classe que também é excessivamente grande e que possui demasiada responsabilidade. Normalmente a de eliminar este \textit{smell} é dividir esta classe em outras mais pequenas.
+
+
+%%\section{Object-Orientation Abusers}
+
+%%\section{Change Preventers}
+
+\subsection{Dispensables}
+
+\hspace{5mm} Um \textit{dispensable} é um tipo de \textit{bad smell} que consiste em alguma coisa que seja desnecessária e que não tenha sentido como, por exemplo, comentários, código duplicado, classes que têm poucas responsabilidades ou até nenhuma, classes que apenas guardam variáveis, mas não existe nenhuma lógica sobre esses dados, código que não é utilizado ou até funcionalidades que são feitas a pensar no futuro, mas que não utilizadas no presente. Todas estas situações fariam com que o código ficasse mais limpo, mais eficiente e mais fácil de compreender se fossem eliminadas.
+
+\subsubsection{Comments}
+
+\hspace{5mm} Os comentários podem parecer muitas vezes inofensivos e até facilitadores na percepção do trabalho que foi feito. Contudo, se retirarmos o comentário e, subitamente, o que está escrito se tornar muito mais difícil de compreender estamos perante um \textit{bad smell}. Isto significa que o código deve ser refeito e que os comentários servem de certa forma como uma máscara para certos problemas.
+
+%%\section{Couplers}
+
+
+\section{Bons Hábitos}
+
+\hspace{5mm} Esta classe está reservada para situações que não são consideradas \textit{code smells}, mas que são consideradas bons costumes no momento de programação.
+
+\subsection{toString(), equals(), clone()...}
+
+\hspace{5mm} Uma classe deve ser robusta e apresentar alguma capacidade  de acomodar necessidades futuras. Para tal, existem algumas funções frequentes na programação orientada a objectos em Java que, apesar de nem sempre serem necessárias, quase sempre são implementadas de forma a tornar a classe mais completa e integra. Tais métodos podem ser, os diferentes tipos de construtor, como \textit{toString()}, o método \textit{clone()}, entre outros.
+
+\subsection{Usar Variáveis Privadas}
+
+\hspace{5mm} Numa classe, as variáveis de instância devem ser privadas. Isto deve ser visto um bom costume de programação, pois, comummente, a utilização de variáveis públicas está associada com a utilização directa das mesmas por outras classes. O que já é classificado como um \textit{bad smell} designado como \textit{Inappropriate Intimacy}.
+
+\subsection{Nome da classe começada com letra maiúscula}
+
+\hspace{5mm} O nome da classe deve ser iniciado com uma letra maiúscula, sendo uma boa prática também colocar o nome de uma variável de instância com letra minúscula, podendo assim ser mais fácil de distinguir classes de variáveis de instância, etc. De referir que também é identificado se o nome da classe possuí o mesmo nome que o nome do ficheiro associado à classe.
+
+\subsection{Utilizar Interfaces Genéricas}
+
+\hspace{5mm} Acoplamento e dependência excessiva são características dispensáveis no código e que têm de ser resolvidos o mais cedo possível, pois, corre-se o risco de inconvenientes futuros. Para atenuar este problema, poder-se-ão adoptar certas medidas como a utilização de interfaces genéricas. Isto é, devem-se utilizar interfaces como \textit{List} e \textit{Set} em vez de estruturas específicas, pois, desta forma, mudanças serão facilitadas no futuro.
+
+\subsection{Utilização de Herança}
+
+\hspace{5mm} Apesar de inúmeras vezes ser bem utilizado e estar perfeitamente enquadrado no contexto, o mecanismo de herança pode vir a ter consequências adversas. 
+\par A utilização de herança implica que métodos e variáveis de instância sejam herdados pela classe que estende e isto causa dependências, que são por vezes, negligenciadas. Contudo, no futuro, se for necessário levar a cabo alterações na superclasse irão surgir problemas, pois o comportamento das subclasses pode alterar-se. Consequentemente, isto pode levar a que seja necessário alterar todas as subclasses. Caso isto aconteça a arquitectura deve ser repensada e a viabilidade da herança avaliada.
+
+\subsection{Variáveis Insuficientemente Identificadas}
+
+\hspace{5mm} No acto da programação muitas tarefas são executadas com uma atitude de "quick fix" e experimental. Além do mais, todo o código quando é criado é experimental, pois nunca se sabe se realmente funciona, e tenta-se construí-lo da forma mais rápida, tendo em mente alterações futuras que nem sempre acontecem, isto implica muitas vezes escrever de uma maneira resumida, sucinta e quase sempre apenas perceptível a quem o está a fazer. Ao não efectuar estas mudanças o que foi produzido pode ser dificilmente compreensível por alguém que de fora ou que venha a fazer parte da equipa no futuro ou até, eventualmente, por quem desenvolveu devido a esquecimento. Neste contexto, o colectivo de trabalho decidiu por recolher indicadores relativos a variáveis identificadas apenas por uma letra, que como se pode supor, são indícios de programação inacabada, por melhorar e de entraves à mudança futura.
+
+\subsection{Ciclos Infinitos}
+
+\hspace{5mm} Para um produto de software ser eficaz é impreterível que o mesmo acabe o processamento de qualquer que seja tarefa de que seja responsável. Caso contrário nenhum resultado surgirá, o programa é inútil  e todo o esforço realizado para a produzir o software é infrutífero. Um caso específico deste problema é a aplicação de ciclos \textit{while true} em que é necessário cumprir uma condição de forma a sair do ciclo. No entanto, nem sempre é fácil ou trivial verificar que o ciclo é quebrado. Assim, nesta ferramenta de análise estática, a presença destes casos é contabilizada como um smell.
+
+\subsection{Utilização de Exceções}
+
+\hspace{5mm} Os erros de software são normalmente causados por ação humana pelo que, é importante prevenir implementando capacidade de resposta em situação de erro de modo a evitar que todo o sistema falhe. Desta forma, o uso de exceções em métodos desenvolvidos é algo que deve ser sempre considerado de modo a captar possíveis falhas do sistema e antecipar o tratamento das mesmas. 
+\par Assim, esta ferramenta está programando para detetar e expor todos os métodos que não implementem qualquer exceção, indicando que esses métodos são vulneráveis.
+
+\subsection{Input e Output Genérico}
+
+\hspace{5mm} A abstração no código é um factor de elevada importância o qual deve ser sempre tomado em conta, quando possível.
+\par De facto, no input e output de métodos, devem ser sempre recebidas e retornadas as coleções mais genéricas possíveis de modo a seguir as boas práticas de programação. 
+\par Deste modo, este sistema verifica todos os outputs e inputs de todos os métodos de modo a alertar quais os métodos que podiam tornar-se mais abstratos.
+

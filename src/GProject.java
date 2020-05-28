@@ -84,6 +84,24 @@ public class GProject {
         }
         dir.mkdirs();
 
+        FileWriter style = new FileWriter(GProject.output + "style.css");
+        style.write("table {\n" +
+                "  font-family: arial, sans-serif;\n" +
+                "  border-collapse: collapse;\n" +
+                "  width: 100%;\n" +
+                "}\n" +
+                "\n" +
+                "td, th {\n" +
+                "  border: 1px solid #dddddd;\n" +
+                "  text-align: left;\n" +
+                "  padding: 8px;\n" +
+                "}\n" +
+                "\n" +
+                "tr:nth-child(even) {\n" +
+                "  background-color: #dddddd;\n" +
+                "}");
+        style.close();
+
         FileWriter fw = new FileWriter(GProject.output+"index.html");
         PrettyPrint.headerHTML(fw, "Ficheiros analisados: ");
 
@@ -117,8 +135,6 @@ public class GProject {
 
     }
 
-
-
     public static void main(String[] args) throws Exception {
         System.out.println("Insira a diretoria/ficheiro:");
         Scanner input = new Scanner(System.in);
@@ -126,6 +142,7 @@ public class GProject {
         GProject gProject = new GProject();
         gProject.readFolder(filename);
         gProject.printFicheiros();
+        System.out.println("Análise concluída com sucesso, pode consultar o resultado abrindo ficheiro output/index.html no seu browser!");
     }
 
 

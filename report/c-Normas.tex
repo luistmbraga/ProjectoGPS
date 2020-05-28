@@ -1,0 +1,205 @@
+\chapter{Implementação}
+\section{Base do programa}
+\hspace{5mm} Inicialmente, começou-se por desenvolver a base do programa ("tool"), isto é, a leitura dos ficheiros com o código, para a estrutura/classe denominada \textbf{Ficheiro}. 
+
+\hspace{5mm} A estrutura \textbf{Ficheiro}, contém a lista de linhas mesmo, bem como uma toda uma estrutura, para guardar de forma transiente os dados recolhidos durante a análise. 
+
+\hspace{5mm} Após ter-se os ficheiros organizados em memória, poder-se-á proceder ao processamento dos mesmos, isto é, percorrer a lista de linhas presente na classe \textbf{Ficheiro}. A ideia consiste em processar cada linha e verificar na mesma as várias normas identificadas, e proceder às acções das mesmas em caso de existirem. As acções que provém da identificação de uma norma, vão desde guardar informação na estrutura, até acções mais complexas que envolvem mais do que uma linha, e dessa forma ter-se-á que activar algumas \textit{flags} de controlo, como por exemplo \textbf{insideMethod}, que indica que a análise do ficheiro encontra-se no momento no interior de um método, no entanto isto será abordado com mais detalhe adiante. Maior parte das identificações de normas tira partido do uso de expressões regulares que verificam os padrões das normas/code smells.
+
+\section{Comentários no código}
+\hspace{5mm} Os comentários tal como foi dito anteriormente são uma das normas seleccionadas para serem verificadas. Desta forma, o passo inicial foi identificar as várias formas de comentar em \textbf{Java}, das quais, o comentário numa linha, ou comentários de multi linha. 
+
+O comentário numa única linha torna-se um caso simples de identificar, pois a expressão regular apenas são duas barras, no entanto, importa activar uma flag, para que os restantes testes de code smells sejam desactivados, pois não faz sentido processar quando estão em comentários. Ainda neste caso, guarda-se a linha onde ocorre este comentário para reportar.
+
+De modo muito semelhante, o comentário multi linha, tem uma expressão regular idêntica, sendo uma barra e asterisco. Desta forma, tal como no comentário simples, necessita-se de guardar a linha onde começa o comentário, bem como activar uma flag para desactivar a identificação de outros code smells, enquanto não se chegar à linha onde o comentário termina. Após chegar à linha final do comentário, a flag é desactivada, e passa-se novamente a testar as outras normas.
+
+\section{Variáveis Privadas}
+
+\hspace{5mm} Neste projecto, o recurso a expressões regulares tornou-se prática recorrente e foi adoptada como a forma mais fácil e eficaz de captar os code smells ou a inesxistência destes. A captura de variáveis privadas não é excepção e fez-se uso da seguinte expressão regular com a finalidade de interceptar a ocorrência de declarações de variáveis privadas.
+\par A seguinte \textit{String} contém a expressão regular para capturar estas ocorrências, que são tidas em conta como bons hábitos da programação, tanto que no html de output o utilizador é avisado se possui ou não variáveis privadas nas suas classes.
+
+\vspace{0.5cm}
+
+\begin{lstlisting}[language=Java]  
+String variaveisPrivadasPadrao = "private[A-Za-z0-9 <>,\\[\\]]+[=;]";
+\end{lstlisting}
+
+\vspace{0.5cm}
+
+\par Como se pode verificar, a expressão regular captura a palavra reservada "private" seguida caractéres possíveis em declarações, como letras, números, parêntesis rectos para declaração de arrays e os símbolos de maior e menor usados, por exemplo, na declaração de Maps. Acabando com a '=' caso seja feita uma atribuição imediatamente na declaração ou ';' caso seja o final da declaração.
+
+\section{Uso de Herança}
+
+\hspace{5mm} Para este caso específico não foi utilizada uma expressão regular, mas foi definida, oportunamente, aquando da verificação do nome da classe. Nesse momento é verificado se a declaração da classe contém em si a palavra \textit{extends}. Isto permite verificar se a classe estende uma outra classe e, se for o caso, o utilizador será avisado no output que tal acontece, pelo que deve ter cuidado com este mecanismo por motivos explicitados no capítulo anterior.
+
+\section{Variáveis Insuficientemente Identificadas}
+
+\hspace{5mm} No capítulo anterior são explicados vários bons hábitos de programação e os motivos pelos quais assim são considerados. Um deles são \textit{Variáveis Insuficientemente Identificadas}. Tendo em mente que  a recolha deste tipo de situações é a funcionalidade do programa, poder-se-á dizer que esta funcionalidade visa capturar declarações de variáveis que tenham como nome uma única letra. Para tal, dentro de todos os métodos recebidos como input é verificado se tal declaração acontece. Para o efeito, foi criada a expressão regular descrita a seguir, que é basilar na implementação desta funcionalidade.
+
+\vspace{0.5cm}
+
+\begin{lstlisting}[language=Java]  
+String variaveisUmCarater = "(final)?[A-Za-z\\[\\]<>, ]+ +[A-Za-z] *[;=]";
+\end{lstlisting}
+
+\vspace{0.5cm}
+
+\par De forma semelhante à captura de variáveis privadas faz-se a captura variáveis com apenas um carácter. Contudo, desta vez, isto é realizado no interior de métodos e têm de se ter em conta algumas coisas diferentes como, por exemplo, a possibilidade de atributos como final e como seria de esperar apenas uma letra.432
+
+\section{Long Method}
+
+\par De forma a verificar a existência deste smell é necessário contar o número de linhas de cada método. Para isso é necessário saber onde cada método começa pelo que se utilizou a seguinte expressão regular.
+
+\begin{lstlisting}[language=Java]  
+String nomeMetodoPadrao = "(public|protected|private|static)(\\ |\\t)+(?!class)[A-Za-z<>]+(\\ |\\t)+[A-Za-z]+(\\ |\\t)*(\\ |\\(.*\\{)";
+\end{lstlisting}
+
+\par Efectivamente, esta expressão regular generaliza a declaração de um método permitindo determinar se se está na sua presença. Desta forma guarda-se registo do inicio de um método.
+\par Depois de se saber onde começa o método é agora necessário contar as linhas do mesmo até ao seu termino. Para descobrir onde um determinado método acaba é utilizada a diferença entre o número de chavetas de "abrir e fechar" de modo a que, quando essa diferença for zero, sabe-se então que o método terminou.
+
+\section{Inexistência Exceções nos métodos}
+
+\par Para se verificar se um método implementa ou não exceções é necessário analisar a sua declaração. Para isso utiliza-se a expressão regular mencionada no code smell longMethod de modo a filtrar as declarações dos métodos para posteriormente aplicar a seguinte expressão regular sobre essas declarações.
+
+\begin{lstlisting}[language=Java]  
+    final String excecaoPadrao ="throws";
+\end{lstlisting}
+
+\par De facto, esta expressão regular verifica se um dado método implementa algum tipo de exceção de modo a registar todos os métodos que não o façam.
+
+
+\section{Retornar e receber objectos Genéricos}
+
+\par Efectivamente, para verificar se um método recebe e retorna objectos o mais genéricos possíveis, de modo a promover a abstração do código, foi tomada uma abordagem em que se listaram todas as coleções de objectos menos abstratas, de modo a encontrar os métodos que as recebam ou retornem. De seguida, mais uma vez utilizou-se a expressão regular do code smell longMethod de modo a encontrar as declarações de todos os métodos para então aplicar a seguinte expressão regular a essas declarações:
+
+\begin{lstlisting}[language=Java]  
+String inputOutputPadrao = "(ArrayList|List|HashMap|Set|Queue|Dequeue|Map|ListIterator|SortedSet|SortedMap|HashSet|TreeSet|LinkedList|TreeMap|PriorityQueue)";
+\end{lstlisting}
+
+\par Caso a declaração de um determinado método contenha, quer no seu input ou output, algum dos objectos captados pela expressão regular, este será registado como um método que despromove a abstração do código.
+
+
+\section{Large Class}
+
+\par A implementação da identificação do code smell Large Class tornou-se simplificada uma vez que apenas contabiliza o número de linhas da classe ou o número de métodos. O número de linhas é possível obter de forma directa uma vez que o ficheiro é processado linha a linha, desta forma basta incrementar o número de linhas ao longo do processamento. O número de métodos é, também, de obtenção directa pois, a informação dos métodos (número de linhas e code smells contidos no mesmo) é armazenada ao longo do processamento do respectivo ficheiro sendo por isso possível contabilizar o número de métodos processados. 
+
+\par Neste momento, a norma estabelecida define que uma classe é considerada longa (Large Class) quando tem mais que 10 métodos ou tem mais que 200 linhas. Note-se que este critério pode ser alterado a qualquer momento.
+
+\section{Inexistência dos métodos: toString(), equals() ou clone()}
+
+\par Tal como nas restantes implementações, a identificação dos métodos: toString(), equals() ou clone(); é realizada através de expressão regulares que capturam o formato de cada um dos métodos. Sendos as mesmas:
+
+\begin{lstlisting}[language=Java]  
+String toStringPadrao = "public[\\ \\t]+String[\\ \\t]+toString[\\ \\t]*\\([\\ \\t]*\\)[\\ \\t]*";
+\end{lstlisting}
+
+\begin{lstlisting}[language=Java] 
+String equalsPadrao = "public[\\ \\t]+boolean[\\ \\t]+equals[\\ \\t]*\\([\\ \\t]*Object[\\ \\t]+.*[\\ \\t]*\\)[\\ \\t]*";
+\end{lstlisting}
+
+\begin{lstlisting}[language=Java]  
+String clonePadrao = "public[\\ \\t]+" + className + "[\\ \\t]+clone[\\ \\t]*\\([\\ \\t]*\\)[\\ \\t]*";
+\end{lstlisting}
+
+\par Tendo definido as expressões regulares, durante o processamento do ficheiro linha a linha, caso alguma linha coincida com o padrão, é indicado a existência do respectivo método. Assim, no final, é verificado quais os métodos não identificados.
+
+\section{Uso excessivo de variáveis final}
+
+\par Na identificação de variáveis final foi utilizada a seguinte expressão regular:
+
+\begin{lstlisting}[language=Java] 
+String finalPadrao = "final[\\ \\t]+";
+\end{lstlisting}
+
+\par Da mesma maneira, durante o processamento do ficheiro linha a linha, caso alguma linha coincida com a expressão regular, é incrementado o número de variáveis finais identificadas. No fim, é verificado quantas variáveis final existem sendo que neste momento, a norma estabelecida define que uma classe deve ter no limite 5 variáveis final. Note-se que este critério pode ser alterado a qualquer momento.
+
+\section{Presença dos construtores vazio e parametrizado}
+\hspace{5mm} A norma referente à presença dos construtores utiliza uma expressão regular semelhante à dos métodos, no entanto, sem retorno, permitindo desta forma distinguir os mesmos. 
+
+Assim, quando se encontra o padrão da expressão regular, activa-se uma flag booleana (flag=true) sobre o mesmo, para se verificar a sua presença no \textit{reporting}. 
+
+Importa referir, que se testa \textbf{separadamente} tanto o construtor vazio, como o construtor parametrizado, pois pode-se ter a ocorrência de apenas dum deles.
+
+\section{Tipos primitivos}
+\hspace{5mm} A norma referente aos tipos primitivos determina que os mesmo não devem ser usados. Desta forma, utilizou-se uma expressão regular que detecta o padrão dos seguintes tipos:
+\begin{itemize}
+    \item byte
+    \item short
+    \item int
+    \item long
+    \item float
+    \item double
+    \item char
+    \item boolean
+\end{itemize}
+
+Após serem detectados, guarda-se a linha onde ocorrem, bem como o nome da variável ou função que os usa.
+
+
+\section{Apresentação dos resultados ("\textit{reporting}")}
+
+\hspace{5mm} Um dos problemas encontrados em muitas ferramentas de análise estática de código ("\textit{static analysis tool}") consiste na desorganização da apresentação das mensagens ("warnnings") excessiva, descontrolada e não intuitiva (p.e. apresentação em terminal poderá não ser fácil de interpretar para uma pessoa que não esteja habituada a usar).
+
+Desta forma, o grupo decidiu desenvolver uma ferramenta que ultrapasse o problema referido anteriormente. A solução encontrada foi a geração/apresentação da informação em páginas \textbf{HTML} de forma clara e intuitiva.
+
+Por forma, a ultrapassar o problema da desorganização e quantidade excessiva de mensagens, a solução foi definir indexação (índices), como forma de filtragem de informação, permitindo ao utilizador, selecionar a informação que deseja encontrar. O índice inicial distingue os vários ficheiros analisados, tal como se pode verificar na figura \ref{img:indice-ficheiros}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/indice-ficheiros.png}
+    \caption{Índice dos ficheiros analisados.}
+    \label{img:indice-ficheiros}
+\end{figure}
+
+De seguida, para cada ficheiro, são listadas as várias normas possíveis, tal como se pode verificar na figura \ref{img:indice-normas}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/indice-normas.png}
+    \caption{Índice das normas possíveis no Ficheiro.java.}
+    \label{img:indice-normas}
+\end{figure}
+
+Por fim, para cada norma listada, apresenta-se uma página com a informação adequada sobre a mesma, de seguida apresentam-se alguns exemplos de normas.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.30]{images/n1.png}
+    \caption{Informação sobre a norma Long Method.}
+    \label{img:n1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/n2.png}
+    \caption{Informação sobre a norma da existência de determinados métodos, tais como o toString, equals e clone.}
+    \label{img:n1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/n4.png}
+    \caption{Informação sobre a norma da ausência de variáveis privadas.}
+    \label{img:n1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/n5.png}
+    \caption{Informação sobre a norma da ausência de Construtores.}
+    \label{img:n1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.75]{images/manyFinals.PNG}
+    \caption{Informação sobre a norma do uso excessivo de variáveis final.}
+    \label{img:n1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.75]{images/large-class.PNG}
+    \caption{Informação sobre a norma de classes grandes.}
+    \label{img:n1}
+\end{figure}
