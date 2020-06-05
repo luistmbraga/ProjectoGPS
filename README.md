@@ -22,7 +22,7 @@ Deslocar-se para a diretoria onde se encontra o makefile.
 ```
 cd src/
 ```
-** Existem duas alternativas de correr a ferramenta usando o makefile:
+* Existem duas alternativas de correr a ferramenta usando o makefile:
 
 Compilar e correr o código.
 
