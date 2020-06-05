@@ -1,48 +1,66 @@
-Para correr a ferramenta desenvolvida existem duas formas:
-	
-	# USANDO MAKEFILE (tem que ter o intrepertador de makefile instalado)
+# Ferramenta de análise estática de código
 
-	Nota: o ficheiro makefile encontra-se na diretoria src/makefile
+A ferramenta, analisa um ficheiro ou um conjunto de ficheiros numa diretoria, identificando e reportando a informação e localização de alguns dos code smells testados
 
-	(deslocar-se para a diretoria onde se encontra o makefile)
-		cd src/
+## Começar a usar
 
-	Existem duas alternativas para correr a ferramenta através do makefile:
-		
-		Alternativa 1:
-		
-		(compilar e executar o código)
-			- make run_java
+As instruções seguintes, ajudam a começar a utilizar esta ferramenta nos teus projetos de forma simples.
 
-		Alternativa 2: (MAIS RECOMENDADO)
+### Pré requisitos
 
-		(executar o jar da ferramenta)
-			- make run_jar
+Ferramentas necessárias:
 
-	
+```
+Java 8+
+makefile
+```
 
-	# NÃO USAR MAKEFILE
+### Instalação/execução usando o makefile
 
-	Caso não tenha makefile instalado pode tentar as seguintes alternativas:
+Deslocar-se para a diretoria onde se encontra o makefile
 
-		Alternativa 1:
-			adicionar a pasta src a um projeto de uma IDE e fazer run da class GProject.java
+```
+cd src/
+```
+Existem duas alternativas de correr a ferramenta usando o makefile:
 
-		Alternativa 2:
-			
-			(deslocar-se para a diretoria src)
-				cd src
+Compilar e correr o código.
 
-			(executar o código)
-				javac *.java
-				java GProject
-		Alternativa 3:
+```
+make run_java
+```
 
-			(deslocar-se para a diretoria src)
-				cd src
+Correr a ferramenta pelo JAR.
 
-			(executar o jar)
-				java -jar projeto-gps.jar
+```
+make run_jar
+```
 
-		Nota: ATENÇÃO não é possível correr o jar ao carregar no icon do jar, tem de ser através de linha de comandos
+### Instalação/execução usando o compilador java
 
+Deslocar-se para a diretoria src.
+
+```
+cd src
+```
+
+Compilar e executar o código.
+
+```
+javac *.java
+java GProject
+```
+
+### Instalação/execução executando o jar
+
+Deslocar-se para a diretoria src.
+
+```
+cd src
+```
+
+Executar a ferramenta através do JAR.
+
+```			
+java -jar projeto-gps.jar
+```
