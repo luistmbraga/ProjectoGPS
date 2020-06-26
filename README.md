@@ -64,3 +64,7 @@ Executar a ferramenta através do JAR.
 ```			
 java -jar projeto-gps.jar
 ```
+
+
+### Nota do projecto:
+18 valores
